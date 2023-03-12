@@ -22,6 +22,7 @@
 The interfaces defined in this module allow receiving notification events when
 the user's profile has been effectively changed on the server."""
 
+from __future__ import absolute_import
 from papyon.event import BaseEventInterface
 
 __all__ = ["ProfileEventInterface"]

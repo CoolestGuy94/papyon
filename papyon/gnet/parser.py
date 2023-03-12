@@ -20,8 +20,9 @@
 
 """Incomming data parsers."""
 
-from constants import *
-from message.HTTP import HTTPResponse
+from __future__ import absolute_import
+from .constants import *
+from .message.HTTP import HTTPResponse
 
 import gobject
 

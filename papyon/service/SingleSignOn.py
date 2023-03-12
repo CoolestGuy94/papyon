@@ -18,8 +18,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-from SOAPService import *
-from description.SingleSignOn.RequestMultipleSecurityTokens import LiveService
+from __future__ import absolute_import
+from __future__ import print_function
+from .SOAPService import *
+from .description.SingleSignOn.RequestMultipleSecurityTokens import LiveService
 
 from papyon.errors import ClientError, ClientErrorType
 from papyon.util.async import *
@@ -32,6 +34,7 @@ import sys
 import Crypto.Util.randpool as randpool
 from Crypto.Hash import HMAC, SHA
 from Crypto.Cipher import DES3
+from six.moves import input
 
 __all__ = ['SingleSignOn', 'LiveService', 'RequireSecurityTokens']
 
@@ -260,14 +263,14 @@ if __name__ == '__main__':
     import logging
 
     def sso_cb(tokens):
-        print "Received tokens : "
+        print("Received tokens : ")
         for token in tokens:
-            print "token %s : %s" % (token, str(tokens[token]))
+            print("token %s : %s" % (token, str(tokens[token])))
 
     logging.basicConfig(level=logging.DEBUG)
 
     if len(sys.argv) < 2:
-        account = raw_input('Account: ')
+        account = input('Account: ')
     else:
         account = sys.argv[1]
 

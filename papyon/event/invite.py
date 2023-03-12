@@ -22,6 +22,7 @@
 The interfaces defined in this module allow receiving notification events when
 we get invited into an activity with other users."""
 
+from __future__ import absolute_import
 from papyon.event import BaseEventInterface
 
 __all__ = ["InviteEventInterface"]

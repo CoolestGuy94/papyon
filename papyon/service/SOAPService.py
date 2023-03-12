@@ -20,9 +20,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-import description
-from errors import SOAPParseError
-from SOAPUtils import *
+from __future__ import absolute_import
+from . import description
+from .errors import SOAPParseError
+from .SOAPUtils import *
 from papyon.gnet.errors import HTTPError
 from papyon.util.async import *
 
@@ -31,13 +32,14 @@ import papyon.util.element_tree as ElementTree
 import papyon.util.string_io as StringIO
 import re
 import logging
+import six
 
 __all__ = ['SOAPService', 'SOAPResponse']
 
 logger = logging.getLogger('papyon.service')
 
 def url_split(url, default_scheme='http'):
-    from urlparse import urlsplit, urlunsplit
+    from six.moves.urllib.parse import urlsplit, urlunsplit
     if "://" not in url: # fix a bug in urlsplit
         url = default_scheme + "://" + url
     protocol, host, path, query, fragment = urlsplit(url)
@@ -211,13 +213,13 @@ class SOAPService(object):
         try:
             logger.debug("<<< Received response for %s" % request_id)
             decoded_body = http_response.decode_body()
-            logger.debug("<<<" + unicode(decoded_body, "utf-8"))
+            logger.debug("<<<" + six.text_type(decoded_body, "utf-8"))
             soap_response = SOAPResponse(decoded_body)
             if not soap_response.is_fault():
                 response = method.process_response(soap_response)
                 if not response:
                     raise SOAPParseError("response wasn't found", decoded_body)
-        except Exception, err:
+        except Exception as err:
             logger.exception(err)
             logger.error("Couldn't build or process SOAP response")
             run(errback, err)
@@ -241,9 +243,9 @@ class SOAPService(object):
 
     def _request_handler(self, transport, http_request):
         #hide password from logs
-        cleaned = self.password_regex.sub("<wsse:Password>*****</wsse:Password>", unicode(http_request))
+        cleaned = self.password_regex.sub("<wsse:Password>*****</wsse:Password>", six.text_type(http_request))
 
-        logger.debug(">>> " + unicode(cleaned))
+        logger.debug(">>> " + six.text_type(cleaned))
 
     def _error_handler(self, transport, error):
         logger.warning("Transport Error : " + str(error))
@@ -288,7 +290,7 @@ class SOAPService(object):
         return transport
 
     def _unref_transport(self, transport):
-        for key, trans in self._active_transports.iteritems():
+        for key, trans in six.iteritems(self._active_transports):
             if trans[0] == transport:
                 response = trans[1].pop(0)
 
@@ -302,7 +304,7 @@ class SOAPService(object):
         return None
 
     def _dispose_transport(self, transport):
-        for key, trans in self._active_transports.iteritems():
+        for key, trans in six.iteritems(self._active_transports):
             if trans[0] == transport:
                 response = trans[1]
                 for handle in trans[2]:

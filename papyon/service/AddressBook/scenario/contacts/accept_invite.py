@@ -16,9 +16,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
+from __future__ import absolute_import
 from papyon.service.AddressBook.scenario.base import BaseScenario
 from papyon.service.AddressBook.scenario.base import Scenario
-from update_memberships import UpdateMembershipsScenario
+from .update_memberships import UpdateMembershipsScenario
 
 from papyon.profile import NetworkID, Membership
 

@@ -16,6 +16,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import absolute_import
 from papyon.service.SOAPService import SOAPService, url_split
 from papyon.util.async import *
 from papyon.util.element_tree import XMLTYPE
@@ -24,7 +25,7 @@ from papyon.service.SingleSignOn import *
 
 from papyon.gnet.protocol import ProtocolFactory
 
-import urllib
+import six.moves.urllib.request, six.moves.urllib.parse, six.moves.urllib.error
 
 __all__ = ['Storage']
 
@@ -151,7 +152,7 @@ class Storage(SOAPService):
                 run(errback, error, None)
 
         scheme, host, port, resource = url_split(pre_auth_url)
-        resource += '?t=' + urllib.quote(token.split('&')[0][2:], '')
+        resource += '?t=' + six.moves.urllib.parse.quote(token.split('&')[0][2:], '')
         self.get_resource(scheme, host, resource, callback,
                 (request_static_tile,))
 

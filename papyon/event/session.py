@@ -22,6 +22,7 @@
 The interfaces defined in this module allow receiving notification events 
 about peer to peer sessions."""
 
+from __future__ import absolute_import
 from papyon.event import BaseEventInterface
 
 __all__ = ["P2PSessionEventInterface"]

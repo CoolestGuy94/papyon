@@ -18,8 +18,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import absolute_import
+from __future__ import print_function
 import unittest
 import sys
+import six
 
 audio_definitions = [((8, "PCMA", 8000, None), "8 PCMA/8000", ""),
                      ((0, "PCMU", 8000, None), "0 PCMU/8000", ""),
@@ -108,7 +111,7 @@ class MediaTestCase(unittest.TestCase):
 
     def testParseAttributes(self):
         self.media.payload_types = ['8', '0', '101']
-        for key, values in attributes.iteritems():
+        for key, values in six.iteritems(attributes):
             for value in values:
                 self.media.parse_attribute(key, value)
         self.assertEqual(self.media.rtcp, 42)
@@ -154,12 +157,12 @@ class MessageTestCase(unittest.TestCase):
 
     def testBuildMessageA(self):
         self.message.medias["audio"] = self.audio
-        print self.message
+        print(self.message)
 
     def testBuildMessageAV(self):
         self.message.medias["audio"] = self.audio
         self.message.medias["video"] = self.video
-        print self.message
+        print(self.message)
 
 
 if __name__ == "__main__":

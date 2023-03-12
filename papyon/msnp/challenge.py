@@ -20,7 +20,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-from constants import ProtocolConstant
+from __future__ import absolute_import
+from .constants import ProtocolConstant
 
 def _msn_challenge(data):
     """
@@ -62,7 +63,7 @@ def _msn_challenge(data):
         i += 2
     high = little_endify((high + md5_integers[1]) % 0x7FFFFFFF)
     low = little_endify((low + md5_integers[3]) % 0x7FFFFFFF)
-    key = (high << 32L) + low
+    key = (high << 32) + low
     key = little_endify(key, "Q")
     longs = [x for x in struct.unpack(">QQ", md5_digest)]
     longs = [little_endify(x, "Q") for x in longs]
@@ -70,7 +71,7 @@ def _msn_challenge(data):
     longs = [little_endify(abs(x), "Q") for x in longs]
     out = ""
     for value in longs:
-        value = hex(long(value))
+        value = hex(int(value))
         value = value[2:-1]
         value = value.zfill(16)
         out += value.lower()

@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import absolute_import
 from papyon.gnet.constants import *
 from papyon.gnet.io import *
 from papyon.msnp.constants import *
@@ -128,13 +129,13 @@ class SIPTunneledTransport(SIPBaseTransport):
             if msg is None or msg.tagName != 'msg':
                 raise ValueError("Expected node was 'msg' but is %r" % msg)
             chunk = msg.firstChild.data
-            if "e" in sip.attributes.keys():
+            if "e" in list(sip.attributes.keys()):
                 encoding = sip.attributes["e"].value
                 if encoding == "base64":
                     chunk = base64.b64decode(chunk)
                 else:
                     raise ValueError("Unknown message encoding %s" % encoding)
-        except Exception, err:
+        except Exception as err:
             logger.warning("Invalid tunneled SIP message: %s" % message)
             logger.exception(err)
         else:

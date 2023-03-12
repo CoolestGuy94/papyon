@@ -17,7 +17,8 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-from abstract import AbstractProxy
+from __future__ import absolute_import
+from .abstract import AbstractProxy
 from papyon.gnet.io import TCPClient
 from papyon.gnet.constants import *
 from papyon.gnet.errors import *
@@ -263,7 +264,7 @@ class SOCKS5Proxy(AbstractProxy):
                 self._delimiter_parser.disable()
                 self._transport.disable()
                 self._client._proxy_open()
-        except Exception, err:
+        except Exception as err:
             logger.error("Handshake failed")
             logger.exception(err)
             self.close()

@@ -21,10 +21,12 @@
 
 """Base classes used by the specific classes of the Core Protocol"""
 
-from constants import ProtocolState, ProtocolError
+from __future__ import absolute_import
+from .constants import ProtocolState, ProtocolError
 
 import gobject
 import logging
+import six
 
 __all__ = ['BaseProtocol']
 
@@ -98,7 +100,7 @@ class BaseProtocol(gobject.GObject):
             @param command: the received command
             @type command: L{command.Command}
         """
-        logger.warning('Notification unhandled command : ' + unicode(command))
+        logger.warning('Notification unhandled command : ' + six.text_type(command))
 
     def _error_handler(self, error):
         """Handles errors
@@ -106,7 +108,7 @@ class BaseProtocol(gobject.GObject):
             @param error: an error command object
             @type error: L{command.Command}
         """
-        logger.error('Notification unhandled error : ' + unicode(error))
+        logger.error('Notification unhandled error : ' + six.text_type(error))
 
     # callbacks
     def _dispatch_command(self, connection, command):
@@ -116,9 +118,9 @@ class BaseProtocol(gobject.GObject):
                     self._default_handler)
             try:
                 handler(command)
-            except Exception, err:
+            except Exception as err:
                 logger.error(str(err))
-                logger.error('Ignoring invalid command : ' + unicode(command))
+                logger.error('Ignoring invalid command : ' + six.text_type(command))
         else:
             self._error_handler(command)
    

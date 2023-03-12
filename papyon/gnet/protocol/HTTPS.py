@@ -17,11 +17,12 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
+from __future__ import absolute_import
 from papyon.gnet.constants import *
 from papyon.gnet.io import SSLTCPClient
 from papyon.gnet.proxy.factory import ProxyFactory
 from papyon.gnet.parser import HTTPParser
-from HTTP import HTTP
+from .HTTP import HTTP
 
 __all__ = ['HTTPS']
 

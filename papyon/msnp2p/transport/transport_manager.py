@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import absolute_import
 from papyon.msnp2p.SLP import *
 from papyon.msnp2p.transport.switchboard import *
 from papyon.msnp2p.transport.notification import *
@@ -166,7 +167,7 @@ class P2PTransportManager(gobject.GObject):
 
         try:
             blob.append_chunk(chunk)
-        except Exception, err:
+        except Exception as err:
             logger.exception(err)
             logger.warning("Couldn't append chunk to blob, ignoring it")
             return
@@ -230,7 +231,7 @@ class P2PTransportManager(gobject.GObject):
     def _parse_signaling_blob(self, blob):
         try:
             message = SLPMessage.build(blob.read_data())
-        except Exception, err:
+        except Exception as err:
             logger.exception(err)
             logger.error('Received invalid SLP message')
             return None

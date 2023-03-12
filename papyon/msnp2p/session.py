@@ -19,6 +19,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import absolute_import
+from __future__ import print_function
 from papyon.event import EventsDispatcher
 from papyon.msnp2p.constants import *
 from papyon.msnp2p.SLP import *
@@ -290,7 +292,7 @@ class P2PSession(gobject.GObject, EventsDispatcher, Timer):
             elif isinstance(message.body, SLPSessionCloseBody):
                 self._on_bye_received(message)
             else:
-                print "Unhandled signaling blob :", message
+                print("Unhandled signaling blob :", message)
         elif isinstance(message, SLPResponseMessage):
             if isinstance(message.body, SLPSessionRequestBody):
                 self.stop_timeout("response")
@@ -301,7 +303,7 @@ class P2PSession(gobject.GObject, EventsDispatcher, Timer):
                     self._emit("rejected")
                     self._on_session_rejected(message)
             else:
-                print "Unhandled response blob :", message
+                print("Unhandled response blob :", message)
 
     def _on_data_sent(self, data):
         logger.info("Session data transfer completed")

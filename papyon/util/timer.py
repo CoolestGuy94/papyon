@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import absolute_import
 import gobject
 
 __all__ = ['Timer']
@@ -30,7 +31,7 @@ class Timer(object):
 
     @property
     def timeouts(self):
-        return self._timeout_sources.keys()
+        return list(self._timeout_sources.keys())
 
     def start_timeout(self, key, time, *cb_args):
         self.stop_timeout(key)

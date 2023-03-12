@@ -17,10 +17,11 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
+from __future__ import absolute_import
 name = "scenario"
 description = ""
 
-import base
+from . import base
 
-from get_stored_profile import *
-from store_profile import *
+from .get_stored_profile import *
+from .store_profile import *

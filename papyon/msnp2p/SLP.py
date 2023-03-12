@@ -19,6 +19,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import absolute_import
 from papyon.gnet.message.HTTP import HTTPMessage
 from papyon.msnp2p.constants import SLPContentType, SLPStatus
 from papyon.msnp2p.errors import SLPParseError
@@ -238,7 +239,7 @@ class SLPMessageBody(HTTPMessage):
 
     @staticmethod
     def build(content_type, content):
-        if content_type in SLPMessageBody.content_classes.keys():
+        if content_type in list(SLPMessageBody.content_classes.keys()):
             cls = SLPMessageBody.content_classes[content_type]
             body = cls();
         else:

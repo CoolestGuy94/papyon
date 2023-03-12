@@ -16,8 +16,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-import storage
-import scenario
+from __future__ import absolute_import
+from __future__ import print_function
+from . import storage
+from . import scenario
 
 from papyon.service.ContentRoaming.constants import *
 from papyon.service.ContentRoaming.scenario import *
@@ -26,6 +28,7 @@ from papyon.util.async import *
 import gobject
 import imghdr
 import logging
+from six.moves import input
 
 logger = logging.getLogger("papyon.service.content_roaming")
 
@@ -199,7 +202,7 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
 
     if len(sys.argv) < 2:
-        account = raw_input('Account: ')
+        account = input('Account: ')
     else:
         account = sys.argv[1]
 
@@ -218,7 +221,7 @@ if __name__ == '__main__':
 
             def content_roaming_state_changed(cr, pspec):
                  if cr.state == ContentRoamingState.SYNCHRONIZED:
-                     print "Content roaming service is now synchronized"
+                     print("Content roaming service is now synchronized")
                      
 #                     print cr.display_picture
 #                      type, data = cr.display_picture

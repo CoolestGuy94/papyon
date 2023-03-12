@@ -19,12 +19,14 @@
 #
 
 """HTTP Messages structures."""
+from __future__ import absolute_import
 import cgi
 import gzip
 from papyon.gnet.constants import *
 from papyon.gnet.errors import *
 from papyon.util.odict import odict
 import papyon.util.string_io as StringIO
+import six
 
 __all__ = ['HTTPMessage', 'HTTPResponse', 'HTTPRequest']
 
@@ -142,7 +144,7 @@ class HTTPResponse(HTTPMessage):
         if headers is None:
             headers = {}
         HTTPMessage.__init__(self)
-        for header, value in headers.iteritems():
+        for header, value in six.iteritems(headers):
             self.add_header(header, value)
         self.body = body
         self.status = status
@@ -170,7 +172,7 @@ class HTTPRequest(HTTPMessage):
         if headers is None:
             headers = {}
         HTTPMessage.__init__(self)
-        for header, value in headers.iteritems():
+        for header, value in six.iteritems(headers):
             self.add_header(header, value)
         self.body = body
         self.method = method

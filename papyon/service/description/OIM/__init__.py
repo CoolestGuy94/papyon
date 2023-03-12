@@ -17,9 +17,10 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
+from __future__ import absolute_import
 name = "OIM"
 description = "Offline messages service"
 
 url = "https://ows.messenger.msn.com/OimWS/oim.asmx"
 
-import Store2
+from . import Store2

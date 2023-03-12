@@ -17,7 +17,8 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-from common import *
+from __future__ import absolute_import
+from .common import *
 
 import xml.sax.saxutils as xml
 

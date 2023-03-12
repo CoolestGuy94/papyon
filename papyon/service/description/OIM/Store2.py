@@ -17,6 +17,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
+from __future__ import absolute_import
 import xml.sax.saxutils as xml
 def soap_header(from_member_name, friendly_name, proxy, msnp_ver, build_ver,
                 to_member_name, message_number, security_token, app_id, 

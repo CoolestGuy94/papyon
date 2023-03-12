@@ -17,9 +17,10 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
+from __future__ import absolute_import
 name = "Spaces"
 description = "MSN Live Spaces service"
 
 url = "http://cc.services.spaces.live.com/contactcard/contactcardservice.asmx"
 
-import GetXmlFeed
+from . import GetXmlFeed

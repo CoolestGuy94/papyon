@@ -17,9 +17,11 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-import rsi
-import oim
-import scenario
+from __future__ import absolute_import
+from __future__ import print_function
+from . import rsi
+from . import oim
+from . import scenario
 
 from papyon.service.SOAPUtils import *
 from papyon.service.OfflineIM.constants import *
@@ -39,6 +41,7 @@ import datetime
 import gobject
 
 import logging
+from six.moves import input
 
 __all__ = ['OfflineMessagesBox', 'OfflineMessage']
 
@@ -68,7 +71,7 @@ class OfflineMessagesStorage(list):
             group_by_func.__name__ = name
             return group_by_func
         else:
-            raise AttributeError, name
+            raise AttributeError(name)
         
     def search_by(self, field, value):
         result = []
@@ -393,7 +396,7 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
 
     if len(sys.argv) < 2:
-        account = raw_input('Account: ')
+        account = input('Account: ')
     else:
         account = sys.argv[1]
 
@@ -408,7 +411,7 @@ if __name__ == '__main__':
             lambda *args: gobject.idle_add(mainloop.quit()))
 
     def sso_callback(arg):
-        print arg
+        print(arg)
 
     def sso_errback():
         pass

@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import absolute_import
 from papyon.sip.constants import SIPMode, T1, T2
 from papyon.sip.message import SIPRequest, SIPContact, SIPCSeq, SIPRoute
 from papyon.sip.sdp import SDPMessage
@@ -268,7 +269,7 @@ class SIPDialog(gobject.GObject, Timer):
             offer = SDPMessage(body=message.body)
             self._pending_remote_offer = True
             self.emit("offer-received", offer, initial)
-        except Exception, err:
+        except Exception as err:
             logger.error("Malformed body in media session offer")
             logger.exception(err)
             return False

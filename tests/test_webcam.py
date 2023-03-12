@@ -18,12 +18,15 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import absolute_import
+from __future__ import print_function
 import getpass
 import gobject
 import logging
 import sys
 import time
 import unittest
+from six.moves import input
 
 sys.path.insert(0, "")
 
@@ -33,7 +36,7 @@ from papyon.media.constants import *
 from papyon.transport import HTTPPollConnection
 
 def get_proxies():
-    import urllib
+    import six.moves.urllib.request, six.moves.urllib.parse, six.moves.urllib.error
     proxies = urllib.getproxies()
     result = {}
     if 'https' not in proxies and \
@@ -91,7 +94,7 @@ class ClientEvents(papyon.event.ClientEventInterface,
             self._client.profile.display_name = "Papyon (Webcam test)"
             self._client.profile.presence = papyon.Presence.ONLINE
             for contact in self._client.address_book.contacts:
-                print contact
+                print(contact)
             gobject.timeout_add_seconds(2, self._client.invite)
 
     def on_invite_webcam(self, call, producer):
@@ -99,7 +102,7 @@ class ClientEvents(papyon.event.ClientEventInterface,
         self.session_handler = MediaSessionHandler(call.media_session)
 
     def on_client_error(self, error_type, error):
-        print "ERROR :", error_type, " ->", error
+        print("ERROR :", error_type, " ->", error)
 
 
 class CallEvents(papyon.event.CallEventInterface):
@@ -113,12 +116,12 @@ class CallEvents(papyon.event.CallEventInterface):
 if __name__ == "__main__":
 
     if len(sys.argv) < 2:
-        version = int(raw_input('Version: '))
+        version = int(input('Version: '))
     else:
         version = int(sys.argv[1])
 
     if len(sys.argv) < 3:
-        account = raw_input('Account: ')
+        account = input('Account: ')
     else:
         account = sys.argv[2]
 
@@ -128,12 +131,12 @@ if __name__ == "__main__":
         password = sys.argv[3]
 
     if len(sys.argv) < 5:
-        invite = raw_input('Invite: ')
+        invite = input('Invite: ')
     else:
         invite = sys.argv[4]
 
     if len(sys.argv) < 6:
-        producer = bool(raw_input('Producer [yes/no]: ') == 'yes')
+        producer = bool(input('Producer [yes/no]: ') == 'yes')
     else:
         producer = bool(sys.argv[5] == 'yes')
 

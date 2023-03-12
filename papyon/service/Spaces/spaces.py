@@ -17,8 +17,10 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-import contactcardservice
-import scenario
+from __future__ import absolute_import
+from __future__ import print_function
+from . import contactcardservice
+from . import scenario
 
 from papyon.service.SOAPUtils import *
 
@@ -27,6 +29,7 @@ import papyon.util.string_io as StringIO
 import gobject
 
 import logging
+from six.moves import input
 
 __all__ = ['Spaces']
 
@@ -53,11 +56,11 @@ class Spaces(gobject.GObject):
 
     # Callbacks
     def __get_contact_card_cb(self, ccard, contact):
-        print "Contact card retrieved : \n%s\n"  % str(ccard)
+        print("Contact card retrieved : \n%s\n"  % str(ccard))
         self.emit('contact-card-retrieved', contact, ccard)
 
     def __common_errback(self, error_code, *args):
-        print "The fetching of the contact card returned an error (%s)" % error_code
+        print("The fetching of the contact card returned an error (%s)" % error_code)
 
 
 gobject.type_register(Spaces)
@@ -74,7 +77,7 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
 
     if len(sys.argv) < 2:
-        account = raw_input('Account: ')
+        account = input('Account: ')
     else:
         account = sys.argv[1]
 

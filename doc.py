@@ -3,6 +3,7 @@
 """this module was based on setup.py from pygame-ctype branch.
 author: Alex Holkner <aholkner@cs.rmit.edu.au>"""
 
+from __future__ import absolute_import
 import os
 from os.path import join, abspath, dirname, splitext
 import sys

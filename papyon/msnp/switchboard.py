@@ -23,17 +23,19 @@
 """Switchboard protocol Implementation
 Implements the protocol used to communicate with the Switchboard Server."""
 
-from base import BaseProtocol
-from constants import ProtocolError, ProtocolState
-from message import Message
+from __future__ import absolute_import
+from .base import BaseProtocol
+from .constants import ProtocolError, ProtocolState
+from .message import Message
 import papyon.profile
 
 from papyon.util.async import run
 from papyon.util.parsing import build_account, parse_account
 
 import logging
-import urllib
+import six.moves.urllib.request, six.moves.urllib.parse, six.moves.urllib.error
 import gobject
+import six
 
 __all__ = ['SwitchboardProtocol']
 
@@ -148,10 +150,10 @@ class SwitchboardProtocol(BaseProtocol):
         elif pspec.name == "inviting":
             return self.__inviting
         else:
-            raise AttributeError, "unknown property %s" % pspec.name
+            raise AttributeError("unknown property %s" % pspec.name)
 
     def do_set_property(self, pspec, value):
-        raise AttributeError, "unknown property %s" % pspec.name
+        raise AttributeError("unknown property %s" % pspec.name)
 
     # Public API -------------------------------------------------------------
     def invite_user(self, contact):
@@ -160,7 +162,7 @@ class SwitchboardProtocol(BaseProtocol):
             @param contact: the contact to invite
             @type contact: L{profile.Contact}"""
         assert(self.state == ProtocolState.OPEN)
-        if contact in self.__invitations.values():
+        if contact in list(self.__invitations.values()):
             return
         self.__invitations[self._transport.transaction_id] = contact
         self._inviting = True
@@ -254,7 +256,7 @@ class SwitchboardProtocol(BaseProtocol):
 
     def _handle_IRO(self, command):
         account, guid = parse_account(command.arguments[2])
-        display_name = urllib.unquote(command.arguments[3])
+        display_name = six.moves.urllib.parse.unquote(command.arguments[3])
         client_id = command.arguments[4]
         self.__participant_join(account, guid, display_name, client_id)
 
@@ -263,7 +265,7 @@ class SwitchboardProtocol(BaseProtocol):
 
     def _handle_JOI(self, command):
         account, guid = parse_account(command.arguments[0])
-        display_name = urllib.unquote(command.arguments[1])
+        display_name = six.moves.urllib.parse.unquote(command.arguments[1])
         client_id = command.arguments[2]
         self.__participant_join(account, guid, display_name, client_id)
         if guid is None:
@@ -281,7 +283,7 @@ class SwitchboardProtocol(BaseProtocol):
     # --------- Messenging ---------------------------------------------------
     def _handle_MSG(self, command):
         account = command.arguments[0]
-        display_name = urllib.unquote(command.arguments[1])
+        display_name = six.moves.urllib.parse.unquote(command.arguments[1])
         contact = self.__search_account(account, display_name)
         message = Message(contact, command.payload)
         self._update_switchboard_timeout()
@@ -311,7 +313,7 @@ class SwitchboardProtocol(BaseProtocol):
             except:
                 pass
         else:
-            logger.error('Notification got error :' + unicode(error))
+            logger.error('Notification got error :' + six.text_type(error))
 
     def _update_switchboard_timeout(self):
         if self.inactivity_timer_id:

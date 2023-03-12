@@ -18,7 +18,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-from base import *
+from __future__ import absolute_import
+from .base import *
 
 sys.path.insert(0, "")
 

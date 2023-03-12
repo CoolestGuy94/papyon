@@ -23,6 +23,7 @@
 The interfaces defined in this module allow receiving notification events
 from the contacts."""
 
+from __future__ import absolute_import
 from papyon.event import BaseEventInterface
 
 __all__ = ["ContactEventInterface"]

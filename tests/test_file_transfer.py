@@ -18,7 +18,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-from base import *
+from __future__ import absolute_import
+from __future__ import print_function
+from .base import *
 
 sys.path.insert(0, "")
 
@@ -54,7 +56,7 @@ class FileTransferClient(TestClient):
 
         # get file details
         filename = os.path.basename(path)
-        data = file(path, 'r')
+        data = open(path, 'r')
         data.seek(0, os.SEEK_END)
         size = data.tell()
         data.seek(0, os.SEEK_SET)
@@ -67,7 +69,7 @@ class FileTransferClient(TestClient):
         self._session_handler = FileTransferHandler(session)
         buffer = None
         if self.options.write:
-            buffer = file(self.options.write, 'w')
+            buffer = open(self.options.write, 'w')
         session.accept(buffer)
 
 class FileTransferClientEvents(TestClientEvents):
@@ -76,7 +78,7 @@ class FileTransferClientEvents(TestClientEvents):
         TestClientEvents.__init__(self, client)
 
     def on_invite_file_transfer(self, session):
-        print "** Invite for \"%s\" (%i bytes)" % (session.filename, session.size)
+        print("** Invite for \"%s\" (%i bytes)" % (session.filename, session.size))
         if self._client.options.answer == 'accept':
             gobject.timeout_add_seconds(2, self._client.accept, session)
         elif self._client.options.answer == 'reject':
@@ -90,23 +92,23 @@ class FileTransferHandler(papyon.event.P2PSessionEventInterface):
         self._transferred = 0
 
     def on_session_accepted(self):
-        print "** Session has been accepted"
+        print("** Session has been accepted")
 
     def on_session_rejected(self):
-        print "** Session has been rejected"
+        print("** Session has been rejected")
 
     def on_session_completed(self, data):
-        print "** Session has been completed"
+        print("** Session has been completed")
 
     def on_session_canceled(self):
-        print "** Session has been canceled"
+        print("** Session has been canceled")
 
     def on_session_disposed(self):
-        print "** Session has been disposed"
+        print("** Session has been disposed")
 
     def on_session_progressed(self, size):
         self._transferred += size
-        print "** Received %i / %i" % (self._transferred, self._client.size)
+        print("** Received %i / %i" % (self._transferred, self._client.size))
 
 
 if __name__ == "__main__":

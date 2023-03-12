@@ -17,10 +17,12 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-from common import *
-from constants import *
+from __future__ import absolute_import
+from .common import *
+from .constants import *
 
 import xml.sax.saxutils as xml
+import six
 
 def transport_headers():
     """Returns a dictionary, containing transport (http) headers
@@ -89,7 +91,7 @@ def soap_body(contact_id, display_name, is_messenger_user, contact_type,
     
     if email is not None:
         emails = ""
-        for type, email in email.iteritems():
+        for type, email in six.iteritems(email):
             emails += """<ContactEmail>
                             <contactEmailType>%s</contactEmailType>
                             <email>%s</email>
@@ -100,7 +102,7 @@ def soap_body(contact_id, display_name, is_messenger_user, contact_type,
 
     if phone is not None:
         phones = ""
-        for type, number in phone.iteritems():
+        for type, number in six.iteritems(phone):
             phones += """<ContactPhone>
                             <contactPhoneType>%s</contactPhoneType>
                             <number>%s</number>
@@ -111,9 +113,9 @@ def soap_body(contact_id, display_name, is_messenger_user, contact_type,
 
     if location is not None:
         locations = ""
-        for type, parts in location.iteritems():
+        for type, parts in six.iteritems(location):
             items = changes = ""
-            for item, value in parts.iteritems():
+            for item, value in six.iteritems(parts):
                 items += "<%s>%s</%s>" % (item, value, item)
                 changes += " %s%s" % (item[0].upper(), item[1:len(item)]) 
             locations += """<ContactLocation>
@@ -126,7 +128,7 @@ def soap_body(contact_id, display_name, is_messenger_user, contact_type,
 
     if web_site is not None:
         web_sites = ""
-        for type, url in web_site.iteritems():
+        for type, url in six.iteritems(web_site):
             websites += """<ContactWebSite>
                               <contactWebSiteType>%s</contactWebSiteType>
                               <webURL>%s</webURL>
@@ -136,7 +138,7 @@ def soap_body(contact_id, display_name, is_messenger_user, contact_type,
 
     if annotation is not None:
         annotations = ""
-        for name, value in annotation.iteritems():
+        for name, value in six.iteritems(annotation):
             if value == None or value == "":
                 value = "<Value/>"
             else:

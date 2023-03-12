@@ -18,13 +18,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-import SingleSignOn
+from __future__ import absolute_import
+from . import SingleSignOn
 
-import AB
-import Sharing
+from . import AB
+from . import Sharing
 
-import SchematizedStore
+from . import SchematizedStore
 
-import RSI
-import OIM
-import Spaces
+from . import RSI
+from . import OIM
+from . import Spaces

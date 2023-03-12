@@ -18,6 +18,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import absolute_import
+from __future__ import print_function
 import getpass
 import gobject
 import logging
@@ -26,14 +28,16 @@ import signal
 import sys
 import time
 import unittest
+from six.moves import range
+from six.moves import input
 
 sys.path.insert(0, "")
 
 import papyon
 
 def parse_args(opts, args):
-    usage = "%prog [options] " + " ".join(map(lambda x: x[0], args))
-    version = "%prog " + ".".join(map(lambda x: str(x), papyon.version))
+    usage = "%prog [options] " + " ".join([x[0] for x in args])
+    version = "%prog " + ".".join([str(x) for x in papyon.version])
 
     parser = optparse.OptionParser(usage, version=version)
     for short_name, long_name, kwargs in opts:
@@ -48,11 +52,11 @@ def parse_args(opts, args):
             if type == "pass":
                 value = getpass.getpass(display_name)
             elif type == "string":
-                value = raw_input(display_name)
-            elif type == "list":
-                value = raw_input(display_name).split()
-            else:
                 value = input(display_name)
+            elif type == "list":
+                value = input(display_name).split()
+            else:
+                value = eval(input(display_name))
         else:
             value = arguments[i]
             if type == "list":
@@ -65,7 +69,7 @@ def parse_args(opts, args):
 
 
 def get_proxies():
-    import urllib
+    import six.moves.urllib.request, six.moves.urllib.parse, six.moves.urllib.error
     proxies = urllib.getproxies()
     result = {}
     if 'https' not in proxies and \
@@ -94,7 +98,7 @@ class TestClientEvents(papyon.event.ClientEventInterface,
             self._client.connected()
 
     def on_client_error(self, type, error):
-        print "ERROR %s -> %s" % (type, error)
+        print("ERROR %s -> %s" % (type, error))
 
 
 class TestClient(papyon.Client):

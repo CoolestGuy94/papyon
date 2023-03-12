@@ -24,15 +24,18 @@
 This module contains the classes needed to have a conversation with a
 contact."""
 
-import msnp
-import p2p
-from switchboard_manager import SwitchboardHandler
+from __future__ import absolute_import
+from . import msnp
+from . import p2p
+from .switchboard_manager import SwitchboardHandler
 from papyon.event import EventsDispatcher
 from papyon.profile import NetworkID
 
 import logging
 import gobject
-from urllib import quote, unquote
+from six.moves.urllib.parse import quote, unquote
+import six
+from six.moves import range
 
 __all__ = ['Conversation', 'ConversationInterface', 'ConversationMessage', 'TextFormat']
 
@@ -319,7 +322,7 @@ class AbstractConversation(ConversationInterface, EventsDispatcher):
 
         if len(message.msn_objects) > 0:
             body = []
-            for alias, msn_object in message.msn_objects.iteritems():
+            for alias, msn_object in six.iteritems(message.msn_objects):
                 self._client._msn_object_store.publish(msn_object)
                 body.append(alias.encode("utf-8"))
                 body.append(str(msn_object))
@@ -358,7 +361,7 @@ class AbstractConversation(ConversationInterface, EventsDispatcher):
     def _send_message_ex(self, content_type, body, headers={},
             callback=None, errback=None):
         message = msnp.Message(self._client.profile)
-        for key, value in headers.iteritems():
+        for key, value in six.iteritems(headers):
             message.add_header(key, value)
         message.content_type = content_type
         message.body = body
@@ -385,7 +388,7 @@ class AbstractConversation(ConversationInterface, EventsDispatcher):
             message_formatting = '='
 
         if message_type == 'text/plain':
-            msg = ConversationMessage(unicode(message.body, message_encoding),
+            msg = ConversationMessage(six.text_type(message.body, message_encoding),
                     TextFormat.parse(message_formatting),
                     self.__last_received_msn_objects)
             try:
@@ -497,5 +500,5 @@ class SwitchboardConversation(AbstractConversation, SwitchboardHandler):
         pass
 
     def __repr__(self):
-        participants = ",".join(map(lambda p: p.account, self.total_participants))
+        participants = ",".join([p.account for p in self.total_participants])
         return '<SwitchboardConversation participants="%s">' % participants

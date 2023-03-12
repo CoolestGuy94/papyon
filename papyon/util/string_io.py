@@ -20,6 +20,7 @@
 
 """Imports the fastest StringIO available"""
 
+from __future__ import absolute_import
 try:
     from cStringIO import *
 except ImportError:

@@ -18,7 +18,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-from base import *
+from __future__ import absolute_import
+from __future__ import print_function
+from .base import *
 
 sys.path.insert(0, "")
 
@@ -52,7 +54,7 @@ class MSNObjectClient(TestClient):
 
     def change(self):
         filename = os.path.basename(self.options.change)
-        self._data = file(self.options.change, 'r').read()
+        self._data = open(self.options.change, 'r').read()
         msn_object = papyon.p2p.MSNObject(self.profile, len(self._data),
                          papyon.p2p.MSNObjectType.DISPLAY_PICTURE,
                          filename, "", data=StringIO.StringIO(self._data))
@@ -66,9 +68,9 @@ class MSNObjectClient(TestClient):
                 peer=contact)
 
     def retrieved(self, msn_object):
-        print "*** MSN Object has been retrieved"
+        print("*** MSN Object has been retrieved")
         if self.options.write:
-            f = file(self.options.write, 'w')
+            f = open(self.options.write, 'w')
             f.write(msn_object._data)
             f.close()
 

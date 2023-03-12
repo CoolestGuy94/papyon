@@ -20,6 +20,8 @@
 
 """ElementTree independent from the available distribution"""
 
+from __future__ import absolute_import
+import six
 try:
     from xml.etree.cElementTree import *
 except ImportError:
@@ -30,7 +32,7 @@ except ImportError:
 
 __all__ = ["XMLTYPE", "XMLResponse"]
 
-import iso8601
+from . import iso8601
 
 class XMLTYPE(object):
 
@@ -114,7 +116,7 @@ class _Element(object):
         return "<Element name=\"%s\">" % (self.element.tag,)
 
     def _process_path(self, path):
-        for sh, ns in self.ns_shorthands.iteritems():
+        for sh, ns in six.iteritems(self.ns_shorthands):
             path = path.replace("/%s:" % sh, "/{%s}" % ns)
             if path.startswith("%s:" % sh):
                 path = path.replace("%s:" % sh, "{%s}" % ns, 1)

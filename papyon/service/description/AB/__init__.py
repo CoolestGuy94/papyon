@@ -17,23 +17,24 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
+from __future__ import absolute_import
 name = "AB"
 description = "Hotmail address book service"
 
 url = "https://omega.contacts.msn.com/abservice/abservice.asmx"
 
-from constants import *
+from .constants import *
 
-import ABAdd
+from . import ABAdd
 
-import ABFindAll
+from . import ABFindAll
 
-import ABContactAdd
-import ABContactDelete
-import ABContactUpdate
+from . import ABContactAdd
+from . import ABContactDelete
+from . import ABContactUpdate
 
-import ABGroupAdd
-import ABGroupDelete
-import ABGroupUpdate
-import ABGroupContactAdd
-import ABGroupContactDelete
+from . import ABGroupAdd
+from . import ABGroupDelete
+from . import ABGroupUpdate
+from . import ABGroupContactAdd
+from . import ABGroupContactDelete

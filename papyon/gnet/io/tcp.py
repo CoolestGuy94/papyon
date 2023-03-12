@@ -18,9 +18,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
+from __future__ import absolute_import
 from papyon.gnet.constants import *
 from papyon.gnet.proxy.proxyfiable import ProxyfiableClient
-from sock import SocketClient
+from .sock import SocketClient
 
 import gobject
 

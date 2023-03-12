@@ -25,13 +25,14 @@ This module contains the classes needed to engage in a peer to peer transfer
 with a contact.
     @group MSNObject: MSNObjectStore, MSNObject, MSNObjectType
     @sort: MSNObjectStore, MSNObject, MSNObjectType"""
-from msnp2p.filetransfer import FileTransferSession
-from msnp2p.msnobject import MSNObjectSession
-from msnp2p.webcam import WebcamSession
-from msnp2p import EufGuid, ApplicationID
-from msnp2p.constants import SLPStatus
-from msnp2p.errors import P2PError, MSNObjectParseError
-from profile import NetworkID, BaseContact, Contact, Profile
+from __future__ import absolute_import
+from .msnp2p.filetransfer import FileTransferSession
+from .msnp2p.msnobject import MSNObjectSession
+from .msnp2p.webcam import WebcamSession
+from .msnp2p import EufGuid, ApplicationID
+from .msnp2p.constants import SLPStatus
+from .msnp2p.errors import P2PError, MSNObjectParseError
+from .profile import NetworkID, BaseContact, Contact, Profile
 
 from papyon.util.async import *
 from papyon.util.encoding import b64_decode
@@ -40,7 +41,7 @@ import papyon.util.string_io as StringIO
 
 import gobject
 import xml.sax.saxutils as xml
-import urllib
+import six.moves.urllib.request, six.moves.urllib.parse, six.moves.urllib.error
 import base64
 import hashlib
 import logging
@@ -297,7 +298,7 @@ class MSNObjectStore(P2PSessionHandler):
                 peer, guid, message.body.application_id, message)
         try:
             msn_object = MSNObject.parse(self._client, session.context)
-        except Exception, err:
+        except Exception as err:
             session.reject()
             raise err
 
@@ -428,7 +429,7 @@ class FileTransferManager(P2PSessionHandler):
 
         try:
             session.parse_context(message.body.context)
-        except Exception, err:
+        except Exception as err:
             session.reject()
             raise err
 

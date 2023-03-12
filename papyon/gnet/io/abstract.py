@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
+from __future__ import absolute_import
 from papyon.gnet.constants import *
 
 import gobject
@@ -182,7 +183,7 @@ class AbstractClient(gobject.GObject):
         elif pspec.name == "status":
             return self.__status
         else:
-            raise AttributeError, "unknown property %s" % pspec.name
+            raise AttributeError("unknown property %s" % pspec.name)
 
     def do_set_property(self, pspec, value):
         if pspec.name == "host":
@@ -194,5 +195,5 @@ class AbstractClient(gobject.GObject):
                 raise ValueError("Wrong port %d" % self._port)
             self._port = value
         else:
-            raise AttributeError, "unknown property %s" % pspec.name
+            raise AttributeError("unknown property %s" % pspec.name)
 gobject.type_register(AbstractClient)

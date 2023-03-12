@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import absolute_import
 from papyon.event import EventsDispatcher
 from papyon.media.stream import *
 
@@ -154,7 +155,7 @@ class MediaSession(gobject.GObject, EventsDispatcher):
            @param name: Name of the stream to find
            @type name: string"""
 
-        matching = filter(lambda x: x.name == name, self._streams)
+        matching = [x for x in self._streams if x.name == name]
         if not matching:
             return None
         else:

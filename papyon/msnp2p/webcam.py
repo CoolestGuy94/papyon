@@ -19,6 +19,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import absolute_import
+from __future__ import print_function
 from papyon.msnp2p.constants import *
 from papyon.msnp2p.SLP import *
 from papyon.msnp2p.transport import *
@@ -36,6 +38,8 @@ import random
 from papyon.media import MediaCall, MediaCandidate, MediaCandidateEncoder, \
                          MediaSessionMessage, MediaStreamDescription
 from papyon.media.constants import MediaStreamDirection, MediaSessionType
+import six
+from six.moves import range
 
 __all__ = ['WebcamSession']
 
@@ -118,7 +122,7 @@ class WebcamSession(P2PSession, MediaCall):
     def _on_data_blob_received(self, blob):
         blob.data.seek(0, os.SEEK_SET)
         data = blob.data.read()
-        data = unicode(data[10:], "utf-16-le").rstrip("\x00")
+        data = six.text_type(data[10:], "utf-16-le").rstrip("\x00")
 
         if not self._sent_syn:
             self.send_binary_syn() #Send 603 first ?
@@ -133,7 +137,7 @@ class WebcamSession(P2PSession, MediaCall):
             str = ""
             for i in range(0, len(refldata), 2):
                 str += chr(int(refldata[i:i+2], 16))
-            print "Got ReflData :", str
+            print("Got ReflData :", str)
 
     def send_data(self, data):
         message_bytes = data.encode("utf-16-le") + "\x00\x00"

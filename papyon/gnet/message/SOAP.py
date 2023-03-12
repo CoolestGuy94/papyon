@@ -19,8 +19,10 @@
 
 """SOAP Messages structures."""
 
+from __future__ import absolute_import
 import papyon.util.element_tree as ElementTree
 import papyon.util.string_io as StringIO
+import six
 
 __all__=['SOAPRequest', 'SOAPResponse']
 
@@ -84,7 +86,7 @@ class SOAPRequest(object):
         if encoding_style is not None:
             self.method.set("{" + NameSpace.SOAP_ENVELOPE + "}encodingStyle", encoding_style)
 
-        for attr_key, attr_value in attr.iteritems():
+        for attr_key, attr_value in six.iteritems(attr):
             self.method.set(attr_key, attr_value)
     
     def add_argument(self, name, namespace=None, type=None, attrib=None, value=None, **kwargs):
@@ -105,7 +107,7 @@ class SOAPRequest(object):
         if type:
             type = self._qname(type, NameSpace.XML_SCHEMA)
             elem.set("{" + NameSpace.XML_SCHEMA_INSTANCE + "}type", type)
-        for attr_key, attr_value in attributes.iteritems():
+        for attr_key, attr_value in six.iteritems(attributes):
             elem.set(attr_key, attr_value)
         elem.text = value
         return _SOAPElement(elem)

@@ -18,6 +18,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import absolute_import
+from __future__ import print_function
 import gobject
 import logging
 import socket
@@ -46,24 +48,24 @@ class EchoClient(object):
 
     def on_status_changed(self, transport, param):
         status = transport.get_property("status")
-        print status
+        print(status)
         if status == IoStatus.OPEN:
-            print self.transport.sockname
+            print(self.transport.sockname)
             request = "\x02\x01\x41\x31\x41\x31\x41\x31\x00\x00\x00\x00\x00\x00\x00\x00\x5d\x00\x00\x00"
             self.transport.send(request)
 
     def on_error(self, transport, error):
-        print "error", error
+        print("error", error)
 
     def on_received(self, transport, data, lenght):
         fields = struct.unpack("!BBHIHHII", data)
         ver, code, port, ip, discard_port, test_port, test_ip, tr_id = fields
         port ^= 0x4131
-        print repr(data)
-        print ip
+        print(repr(data))
+        print(ip)
         ip ^= 0x41314131
         ip = socket.inet_ntoa(struct.pack("!I", ip))
-        print ip, port
+        print(ip, port)
 
 if __name__ == "__main__":
 

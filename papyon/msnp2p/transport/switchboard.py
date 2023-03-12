@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import absolute_import
 from papyon.msnp.message import Message, MessageAcknowledgement
 from papyon.msnp2p.transport.TLP import MessageChunk
 from papyon.msnp2p.transport.base import BaseP2PTransport
@@ -115,7 +116,7 @@ class SwitchboardP2PTransport(BaseP2PTransport, SwitchboardHandler):
 
         try:
             dest, dest_guid = parse_account(message.get_header('P2P-Dest'))
-        except Exception, err:
+        except Exception as err:
             logger.warning("Couldn't parse destination GUID: %s" % err)
             return
 
@@ -130,7 +131,7 @@ class SwitchboardP2PTransport(BaseP2PTransport, SwitchboardHandler):
         try:
             chunk = MessageChunk.parse(version, message.body[:-4])
             chunk.application_id = struct.unpack('>L', message.body[-4:])[0]
-        except Exception, err:
+        except Exception as err:
             logger.warning("Invalid TLP chunk in SB message: %s" % err)
             return
 

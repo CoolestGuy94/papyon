@@ -17,9 +17,10 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-from HTTPConnect import *
-from SOCKS4 import *
-from SOCKS5 import *
+from __future__ import absolute_import
+from .HTTPConnect import *
+from .SOCKS4 import *
+from .SOCKS5 import *
 
 def ProxyFactory(client, proxies, preferred='direct'):
     if not proxies or preferred not in proxies or not proxies[preferred]:

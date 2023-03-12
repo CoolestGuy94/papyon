@@ -21,6 +21,7 @@
 # MS-Keep-Alive: UAC;hop-hop=yes
 # http://msdn.microsoft.com/en-us/library/cc431508%28v=office.12%29.aspx
 
+from __future__ import absolute_import
 from papyon.sip.extensions.base import SIPExtension
 
 class MSKeepAliveExtension(SIPExtension):

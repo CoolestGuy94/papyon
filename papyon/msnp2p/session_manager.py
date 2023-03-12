@@ -19,6 +19,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import absolute_import
 from papyon.msnp2p.constants import SLPContentType, SLPRequestMethod
 from papyon.msnp2p.transport import *
 from papyon.msnp2p.SLP import *
@@ -29,6 +30,7 @@ import papyon.profile
 import gobject
 import weakref
 import logging
+import six
 
 __all__ = ['P2PSessionManager']
 
@@ -87,7 +89,7 @@ class P2PSessionManager(gobject.GObject):
             return None
 
     def _search_session_by_call(self, call_id):
-        for session in self._sessions.itervalues():
+        for session in six.itervalues(self._sessions):
             if session.call_id == call_id:
                 return session
         return None
@@ -155,7 +157,7 @@ class P2PSessionManager(gobject.GObject):
                     if session is None:
                         logger.error("No handler could handle euf-guid %s" % (message.body.euf_guid))
                         return
-                except Exception, err:
+                except Exception as err:
                     #TODO: answer with a 603 Decline ?
                     logger.exception(err)
                     logger.error("Could not handle SLP invite message")

@@ -18,7 +18,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-from base import *
+from __future__ import absolute_import
+from __future__ import print_function
+from .base import *
 
 sys.path.insert(0, "")
 
@@ -77,7 +79,7 @@ class ConversationClientEvents(TestClientEvents):
         TestClientEvents.__init__(self, client)
 
     def on_invite_conversation(self, conversation):
-        print "*** Received invite for conversation"
+        print("*** Received invite for conversation")
         self._conversation_handler = ConversationHandler(self._client,
                 conversation)
 
@@ -89,39 +91,39 @@ class ConversationHandler(papyon.event.ConversationEventInterface):
         self._msn_client = client
 
     def on_conversation_state_changed(self, state):
-        print "*** Conversation state changed to %s" % state
+        print("*** Conversation state changed to %s" % state)
 
     def on_conversation_error(self, type, error):
-        print "*** Conversation error: %s" % error
+        print("*** Conversation error: %s" % error)
 
     def on_conversation_user_joined(self, contact):
-        print "*** User %s joined conversation" % contact.account
+        print("*** User %s joined conversation" % contact.account)
 
     def on_conversation_user_left(self, contact):
-        print "*** User %s left conversation" % contact.account
+        print("*** User %s left conversation" % contact.account)
 
     def on_conversation_user_typing(self, contact):
-        print "*** User %s is typing" % contact.account
+        print("*** User %s is typing" % contact.account)
 
     def on_conversation_message_received(self, sender, message):
-        print "*** Received message from %s: %s" % (sender.account,
-                message.content)
+        print("*** Received message from %s: %s" % (sender.account,
+                message.content))
         if self._msn_client.options.echo:
             self._client.send_text_message(message)
     
     def on_conversation_nudge_received(self, sender):
-        print "*** Received nudge from %s" % (sender.account)
+        print("*** Received nudge from %s" % (sender.account))
         if self._msn_client.options.echo:
             self._client.send_nudge()
 
     def on_conversation_message_sent(self, message):
-        print "*** Message has been sent"
+        print("*** Message has been sent")
 
     def on_conversation_nudge_sent(self):
-        print "*** Nudge has been sent"
+        print("*** Nudge has been sent")
 
     def on_conversation_closed(self):
-        print "*** Conversation has been closed"
+        print("*** Conversation has been closed")
 
 
 if __name__ == "__main__":

@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import absolute_import
 from papyon.msnp.challenge import _msn_challenge
 from papyon.msnp.notification import ProtocolConstant
 from papyon.service.OfflineIM.constants import *

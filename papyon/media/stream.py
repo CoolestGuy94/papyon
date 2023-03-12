@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import absolute_import
 from papyon.event import EventsDispatcher
 from papyon.media.constants import *
 from papyon.util.timer import Timer
@@ -185,12 +186,12 @@ class MediaStream(gobject.GObject, EventsDispatcher, Timer):
 
         if not self._local_active_candidates:
             return self._local_candidates
-        return self._local_active_candidates.values()
+        return list(self._local_active_candidates.values())
 
     def get_active_remote_candidates(self):
         """Returns the active remote candidates."""
 
-        return self._remote_active_candidates.values()
+        return list(self._remote_active_candidates.values())
 
     def get_default_address(self):
         """Returns the default address. We use the active local candidate if

@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+from __future__ import absolute_import
+from __future__ import print_function
 import papyon
 import papyon.event
 from papyon.msnp2p.session_manager import *
@@ -11,13 +13,14 @@ import papyon.util.string_io as StringIO
 import logging
 import gobject
 import os
+from six.moves import input
 
 logging.basicConfig(level=logging.DEBUG)
 
 finished = False
 
 def get_proxies():
-    import urllib
+    import six.moves.urllib.request, six.moves.urllib.parse, six.moves.urllib.error
     proxies = urllib.getproxies()
     result = {}
     if 'https' not in proxies and \
@@ -55,7 +58,7 @@ class ClientEvents(papyon.event.ClientEventInterface):
             #gobject.timeout_add(3000, self._client.request_display_picture)
 
     def on_client_error(self, error_type, error):
-        print "ERROR :", error_type, " ->", error
+        print("ERROR :", error_type, " ->", error)
 
 class Client(papyon.Client):
     def __init__(self, account, msn_object_path, quit, http_mode=False):
@@ -80,18 +83,18 @@ class Client(papyon.Client):
                 search_by_presence(papyon.Presence.OFFLINE)
         contacts = self.address_book.contacts - contacts
         if len(contacts) == 0:
-            print "No online contacts"
+            print("No online contacts")
             return True
         else:
             contact = contacts[0]
-            print "CONTACT : ", contact.account, str(contact.msn_object)
+            print("CONTACT : ", contact.account, str(contact.msn_object))
             if not contact.msn_object:
                 return True
             self._msn_object_store.request(contact.msn_object, (self.__request_display_picture_callback,))
             return False
 
     def __request_display_picture_callback(self, msn_object):
-        print "Received %s" % str(msn_object)
+        print("Received %s" % str(msn_object))
 
 
 def main():
@@ -106,7 +109,7 @@ def main():
         http_mode = False
 
     if len(sys.argv) < 2:
-        account = raw_input('Account: ')
+        account = input('Account: ')
     else:
         account = sys.argv[1]
 
@@ -116,7 +119,7 @@ def main():
         passwd = sys.argv[2]
 
     if len(sys.argv) < 4:
-        path = raw_input('Display picture path: ')
+        path = input('Display picture path: ')
     else:
         path = sys.argv[3]
 

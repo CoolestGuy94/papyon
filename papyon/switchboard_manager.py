@@ -23,6 +23,7 @@
 The switchboard manager is responsible for managing all the switchboards in
 use, it simplifies the complexity of the switchboard crack."""
 
+from __future__ import absolute_import
 import logging
 import gobject
 import weakref
@@ -33,6 +34,7 @@ from papyon.transport import ServerType
 from papyon.util.async import run
 from papyon.util.weak import WeakSet
 from papyon.event import ConversationErrorType, ContactInviteError, MessageError
+import six
 
 __all__ = ['SwitchboardManager']
 
@@ -303,7 +305,7 @@ class SwitchboardManager(gobject.GObject):
 
     def request_switchboard(self, handler, priority=99):
         handler_participants = handler.total_participants
-        participants = ", ".join(map(lambda c: c.account, handler_participants))
+        participants = ", ".join([c.account for c in handler_participants])
         logger.info("Requesting switchboard for participant(s) %s" % participants)
 
         # If the Handler was orphan, then it is no more
@@ -331,7 +333,7 @@ class SwitchboardManager(gobject.GObject):
                 return
 
         # Check pending switchboards
-        for switchboard, handlers in self._pending_switchboards.iteritems():
+        for switchboard, handlers in six.iteritems(self._pending_switchboards):
             pending_handler = handlers.pop()
             handlers.add(pending_handler)
             switchboard_participants = pending_handler.total_participants
@@ -426,7 +428,7 @@ class SwitchboardManager(gobject.GObject):
                 self._orphaned_switchboards.add(switchboard)
 
         elif state == msnp.ProtocolState.CLOSED:
-            if switchboard in self._switchboards.keys():
+            if switchboard in list(self._switchboards.keys()):
                 for handler in self._switchboards[switchboard]:
                     self._orphaned_handlers.add(handler)
                     handler._on_switchboard_closed()
@@ -437,7 +439,7 @@ class SwitchboardManager(gobject.GObject):
         switchboard_participants = set(switchboard.participants.values())
 
         # Get current handlers for this switchboard
-        if switchboard in self._switchboards.keys():
+        if switchboard in list(self._switchboards.keys()):
             handlers = self._switchboards[switchboard]
             handlers_class = [type(handler) for handler in handlers]
         elif switchboard in list(self._orphaned_switchboards):

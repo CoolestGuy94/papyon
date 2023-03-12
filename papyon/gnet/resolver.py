@@ -19,6 +19,8 @@
 
 """GNet dns resolver"""
 
+from __future__ import absolute_import
+from __future__ import print_function
 import socket
 
 import gobject
@@ -80,19 +82,19 @@ class HostnameResolver(object):
 if __name__ == "__main__":
     mainloop = gobject.MainLoop(is_running=True)
     def print_throbber():
-        print "*"
+        print("*")
         return True
 
     def hostname_resolved(result):
-        print result
+        print(result)
         mainloop.quit()
 
     def hostname_failed(error):
-        print error
+        print(error)
         mainloop.quit()
 
     def resolve_hostname(resolver, host):
-        print "Resolving"
+        print("Resolving")
         resolver.query(host, (hostname_resolved,), (hostname_failed,))
         return False
 

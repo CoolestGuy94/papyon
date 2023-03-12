@@ -17,8 +17,9 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
+from __future__ import absolute_import
 import base64
-import urlparse
+import six.moves.urllib.parse
 
 __all__ = ['ProxyInfos']
 
@@ -70,7 +71,7 @@ class ProxyInfos(object):
                 url"""
         # scheme://netloc/path;parameters?query#fragment
         # (scheme, netloc, path;parameters, query, fragment)
-        url = urlparse.urlsplit(url, default_type)
+        url = six.moves.urllib.parse.urlsplit(url, default_type)
         proxy_type = url[0]
         location = url[1]
         location = location.rsplit('@',1)

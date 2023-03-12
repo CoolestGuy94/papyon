@@ -18,11 +18,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
+from __future__ import absolute_import
 from papyon.gnet.constants import *
 from papyon.gnet.errors import *
 from papyon.gnet.resolver import *
 from papyon.util.async import run
-from abstract import AbstractClient
+from .abstract import AbstractClient
 
 import gobject
 import socket
@@ -102,7 +103,7 @@ class GIOChannelClient(AbstractClient):
         # sometimes it does, which is just great.
         try:
             err = self._transport.connect_ex((host, port))
-        except socket.error, e:
+        except socket.error as e:
             err = e.errno
 
         self._watch_set_cond(gobject.IO_PRI | gobject.IO_IN | gobject.IO_OUT |

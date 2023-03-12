@@ -20,4 +20,5 @@
 """GNet proxy support, provides proxy classes to be used with proxifiable
 IO clients"""
 
-from proxy_infos import *
+from __future__ import absolute_import
+from .proxy_infos import *

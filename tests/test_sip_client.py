@@ -18,7 +18,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-from base import *
+from __future__ import absolute_import
+from __future__ import print_function
+from .base import *
 
 sys.path.insert(0, "")
 
@@ -51,7 +53,7 @@ class SIPClient(TestClient):
                 papyon.profile.NetworkID.MSN)
 
         if contact is None:
-            print 'Unknown contact: %s' % self.options.invite
+            print('Unknown contact: %s' % self.options.invite)
             return False
 
         call = self.call_manager.create_call(contact)
@@ -74,7 +76,7 @@ class SIPClientEvents(TestClientEvents):
         TestClientEvents.__init__(self, client)
 
     def on_invite_conference(self, call):
-        print "INVITED : call-id = %s" % call.id
+        print("INVITED : call-id = %s" % call.id)
         self.call_handler = CallEvents(call)
         self.session_handler = MediaSessionHandler(call.media_session)
         call.ring()

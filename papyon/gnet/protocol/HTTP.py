@@ -17,6 +17,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
+from __future__ import absolute_import
 from papyon.gnet.constants import *
 from papyon.gnet.errors import *
 from papyon.gnet.proxy import ProxyInfos
@@ -25,7 +26,7 @@ from papyon.gnet.io import TCPClient
 from papyon.gnet.parser import HTTPParser
 from papyon.gnet.proxy.factory import ProxyFactory
 
-from urlparse import urlsplit
+from six.moves.urllib.parse import urlsplit
 
 import gobject
 import base64

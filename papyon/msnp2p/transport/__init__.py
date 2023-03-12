@@ -19,4 +19,5 @@
 
 """MSNP2P transport layer"""
 
-from transport_manager import *
+from __future__ import absolute_import
+from .transport_manager import *

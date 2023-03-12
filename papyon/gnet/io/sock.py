@@ -18,9 +18,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
+from __future__ import absolute_import
 from papyon.gnet.constants import *
 from papyon.gnet.errors import *
-from iochannel import GIOChannelClient
+from .iochannel import GIOChannelClient
 
 import gobject
 import socket
@@ -91,7 +92,7 @@ class SocketClient(GIOChannelClient):
                 # Deal with broken pipe from the socket.
                 try:
                     item.sent(self._channel.write(item.read()))
-                except gobject.GError, err:
+                except gobject.GError as err:
                     self.emit("error", IoConnectionFailed(self, str(err)))
                     return True
 

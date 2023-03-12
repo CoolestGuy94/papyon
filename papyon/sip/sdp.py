@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import absolute_import
 from papyon.media import MediaCodec, MediaStreamDescription, MediaSessionMessage
 from papyon.media.constants import *
 from papyon.sip.ice import ICECandidateEncoder
@@ -155,7 +156,7 @@ class SDPDescription(MediaStreamDescription):
     @rw_property
     def payload_types():
         def fget(self):
-            return map(lambda x: str(x.payload), self._codecs)
+            return [str(x.payload) for x in self._codecs]
         def fset(self, value):
             for payload in value:
                 codec = MediaCodec(int(payload))

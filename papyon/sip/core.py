@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import absolute_import
 from papyon.sip.extensions import init_extensions
 from papyon.sip.constants import T1, SIPMode, SIPTransactionError, USER_AGENT
 from papyon.sip.dialog import SIPDialog

@@ -18,11 +18,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-from ms_conversation_id import MSConversationIDExtension
-from ms_proxy_replace import MSProxyReplaceExtension
-from ms_epid import MSEpidExtension
-from ms_mepid import MSMepidExtension
-from outbound import OutboundExtension
+from __future__ import absolute_import
+from .ms_conversation_id import MSConversationIDExtension
+from .ms_proxy_replace import MSProxyReplaceExtension
+from .ms_epid import MSEpidExtension
+from .ms_mepid import MSMepidExtension
+from .outbound import OutboundExtension
 
 def init_extensions(client, core):
     extensions = []

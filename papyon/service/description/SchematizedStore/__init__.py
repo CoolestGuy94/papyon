@@ -17,16 +17,17 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
+from __future__ import absolute_import
 name = "SchematizedStore"
 description = "MSN Storage service"
 
 url = "https://storage.msn.com/storageservice/SchematizedStore.asmx"
 
-import GetProfile
-import UpdateProfile
+from . import GetProfile
+from . import UpdateProfile
 
-import DeleteRelationships
-import CreateRelationships
+from . import DeleteRelationships
+from . import CreateRelationships
 
-import CreateDocument
-import FindDocuments
+from . import CreateDocument
+from . import FindDocuments

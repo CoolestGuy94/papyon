@@ -80,6 +80,7 @@ password was wrong, this will lead us to use the L{papyon.event} interfaces:
 """
 
 
+from __future__ import absolute_import
 import papyon.profile as profile
 import papyon.msnp as msnp
 

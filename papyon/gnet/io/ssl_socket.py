@@ -18,9 +18,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
+from __future__ import absolute_import
 from papyon.gnet.constants import *
 from papyon.gnet.errors import *
-from iochannel import GIOChannelClient
+from .iochannel import GIOChannelClient
 
 import gobject
 import socket
@@ -70,7 +71,7 @@ class SSLSocketClient(GIOChannelClient):
             except (OpenSSL.WantX509LookupError,
                     OpenSSL.WantReadError, OpenSSL.WantWriteError):
                 return True
-            except OpenSSL.Error, err:
+            except OpenSSL.Error as err:
                 self.emit("error", SSLError(str(err)))
                 self.close()
                 return False

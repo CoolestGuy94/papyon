@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from distutils.core import setup
 from doc import make_doc_command, BuildAllDocCommand
 import os

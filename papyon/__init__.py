@@ -26,6 +26,7 @@ instant messaging service.
     @group Network Layer: gnet
 """
 
+from __future__ import absolute_import
 version = (0, 5, 6)
 
 __version__ = ".".join(str(x) for x in version)
@@ -33,12 +34,12 @@ __author__ = "Youness Alaoui <kakaroto@users.sourceforge.net>"
 __url__ = "http://telepathy.freedesktop.org/wiki/Papyon"
 __license__ = "GNU GPL"
 
-from client import *
-from conversation import *
-from profile import NetworkID, Presence, Privacy, Membership, Contact, Group
-import event
-import sip
+from .client import *
+from .conversation import *
+from .profile import NetworkID, Presence, Privacy, Membership, Contact, Group
+from . import event
+from . import sip
 
-import gnet.proxy
+from . import gnet.proxy
 Proxy = gnet.proxy.ProxyInfos.from_string
 ProxyInfos = gnet.proxy.ProxyInfos

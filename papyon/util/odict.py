@@ -1,4 +1,6 @@
+from __future__ import absolute_import
 from UserDict import UserDict
+from six.moves import map
 
 class odict(UserDict):
     def __init__(self, dict = None):
@@ -23,7 +25,7 @@ class odict(UserDict):
         return dict
 
     def items(self):
-        return map(lambda key: (key, self[key]), self._keys)
+        return [(key, self[key]) for key in self._keys]
 
     def keys(self):
         return self._keys[:]
@@ -49,4 +51,4 @@ class odict(UserDict):
             if key not in self._keys: self._keys.append(key)
 
     def values(self):
-        return map(self.get, self._keys)
+        return list(map(self.get, self._keys))

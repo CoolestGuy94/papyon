@@ -19,6 +19,7 @@
 #
 
 """Constants used in GNet."""
+from __future__ import absolute_import
 from socket import AF_INET, AF_INET6, \
     SOCK_STREAM, SOCK_DGRAM, SOCK_RAW, SOCK_RDM, SOCK_SEQPACKET
 try:

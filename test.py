@@ -1,18 +1,21 @@
 #!/usr/bin/env python
 
+from __future__ import absolute_import
+from __future__ import print_function
 import papyon
 import papyon.event
 
 
 import logging
 import gobject
+from six.moves import input
 
 logging.basicConfig(level=logging.DEBUG)
 
 finished = False
 
 def get_proxies():
-    import urllib
+    import six.moves.urllib.request, six.moves.urllib.parse, six.moves.urllib.error
     proxies = urllib.getproxies()
     result = {}
     if 'https' not in proxies and \
@@ -36,12 +39,12 @@ class ClientEvents(papyon.event.ClientEventInterface):
             self._client.profile.presence = papyon.Presence.ONLINE
             self._client.profile.current_media = ("I listen to", "Nothing")
             for contact in self._client.address_book.contacts:
-                print contact
+                print(contact)
             #self._client.profile.personal_message = "Testing papyon, and freeing the pandas!"
             gobject.timeout_add_seconds(5, self._client.start_conversation)
 
     def on_client_error(self, error_type, error):
-        print "ERROR :", error_type, " ->", error
+        print("ERROR :", error_type, " ->", error)
 
 class AnnoyingConversation(papyon.event.ConversationEventInterface):
     def on_conversation_user_joined(self, contact):
@@ -64,7 +67,7 @@ class AnnoyingConversation(papyon.event.ConversationEventInterface):
         pass
 
     def on_conversation_error(self, error_type, error):
-        print "ERROR :", error_type, " ->", error
+        print("ERROR :", error_type, " ->", error)
 
 class Client(papyon.Client):
     def __init__(self, account, quit, http_mode=False):
@@ -93,17 +96,17 @@ class Client(papyon.Client):
                           papyon.Presence.BE_RIGHT_BACK, \
                           papyon.Presence.ON_THE_PHONE, \
                           papyon.Presence.OUT_TO_LUNCH]:
-            print "Trying %s" % state
+            print("Trying %s" % state)
             contacts = self.address_book.contacts.\
                 search_by_presence(state)
 
             if len(contacts) == 0:
-                print "No %s contacts" % state
+                print("No %s contacts" % state)
             else:
                 for contact in contacts:
-                    print "%s is %s" % (contact.display_name, state)
+                    print("%s is %s" % (contact.display_name, state))
                     if contact.account == peer:
-                        print "Inviting %s for a webcam" % contact.display_name
+                        print("Inviting %s for a webcam" % contact.display_name)
                         self._webcam_handler.invite(contact)
                         
                         return False
@@ -124,7 +127,7 @@ def main():
         http_mode = False
 
     if len(sys.argv) < 2:
-        account = raw_input('Account: ')
+        account = input('Account: ')
     else:
         account = sys.argv[1]
 
@@ -134,7 +137,7 @@ def main():
         passwd = sys.argv[2]
 
     if len(sys.argv) < 4:
-        peer = raw_input('Send webcam to : ')
+        peer = input('Send webcam to : ')
     else:
         peer = sys.argv[3]
 

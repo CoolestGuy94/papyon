@@ -17,11 +17,12 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
+from __future__ import absolute_import
 name = "Sharing"
 description = "Membership address book service"
 
 url = "https://omega.contacts.msn.com/abservice/SharingService.asmx"
 
-import FindMembership
-import AddMember
-import DeleteMember
+from . import FindMembership
+from . import AddMember
+from . import DeleteMember

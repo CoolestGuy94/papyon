@@ -20,12 +20,13 @@
 
 """MSN protocol special command : MSG"""
 
+from __future__ import absolute_import
 from papyon.gnet.message.HTTP import HTTPMessage
 from papyon.util.debug import escape_string
 from papyon.util.parsing import parse_account
-
-from urllib import quote, unquote
+from six.moves.urllib.parse import quote, unquote
 import struct
+import six
 
 __all__ = ['MessageAcknowledgement', 'Message']
 
@@ -64,7 +65,7 @@ class Message(HTTPMessage):
     def __repr__(self):
         """Represents the payload of the message"""
         message = ''
-        for header_name, header_value in self.headers.iteritems():
+        for header_name, header_value in six.iteritems(self.headers):
             message += '\t%s: %s\\r\\n\n' % (header_name, repr(header_value))
         if self.headers['Content-Type'] != "application/x-msnmsgrp2p":
             message += '\t\\r\\n\n'

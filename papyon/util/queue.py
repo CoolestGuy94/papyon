@@ -19,6 +19,7 @@
 
 """Useful queues"""
 
+from __future__ import absolute_import
 __all__ = ['PriorityQueue', 'LastElementQueue']
 
 import bisect

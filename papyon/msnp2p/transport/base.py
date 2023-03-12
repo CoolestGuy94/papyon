@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import absolute_import
 from papyon.msnp2p.transport.TLP import MessageBlob
 
 import gobject
@@ -164,7 +165,7 @@ class BaseP2PTransport(gobject.GObject):
             self.emit("chunk-sent", peer, peer_guid, chunk)
 
         blob = self._outgoing_chunks.pop(chunk, None)
-        if blob and blob.is_complete() and blob not in self._outgoing_chunks.values():
+        if blob and blob.is_complete() and blob not in list(self._outgoing_chunks.values()):
             if not chunk.is_data_preparation_chunk():
                 self.emit("blob-sent", peer, peer_guid, blob)
         self._start_processing()
@@ -190,7 +191,7 @@ class BaseP2PTransport(gobject.GObject):
         if 0 in self._data_blob_queue:
             session_id = 0
         else:
-            session_id = self._data_blob_queue.keys()[0]
+            session_id = list(self._data_blob_queue.keys())[0]
 
         if session_id != 0 and not self._ready_to_send():
             logger.info("Transport is not ready to send, bail out")
@@ -203,7 +204,7 @@ class BaseP2PTransport(gobject.GObject):
 
         try:
             chunk = blob.get_chunk(self.version, self.max_chunk_size, sync)
-        except Exception, err:
+        except Exception as err:
             logger.exception(err)
             logger.warning("Couldn't get chunk for session %s" % session_id)
             self._data_blob_queue[session_id].pop(0) #ignoring blob

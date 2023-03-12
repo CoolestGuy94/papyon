@@ -21,9 +21,10 @@
 Contains a set of class abstracting the MSNP protocol used to communicate
 with the Notification Server as well as the Switchboard Server"""
 
-from command import *
-from message import *
-from constants import *
-from notification import *
-from switchboard import *
-from mailbox import *
+from __future__ import absolute_import
+from .command import *
+from .message import *
+from .constants import *
+from .notification import *
+from .switchboard import *
+from .mailbox import *

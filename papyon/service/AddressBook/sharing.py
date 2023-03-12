@@ -18,12 +18,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import absolute_import
+from __future__ import print_function
 from papyon.service.SOAPService import SOAPService
 from papyon.util.async import *
 from papyon.util.element_tree import XMLTYPE
 from papyon.service.SingleSignOn import *
 from papyon.service.AddressBook.common import *
 from papyon.service.AddressBook.constants import *
+import six
+from six.moves import input
 
 __all__ = ['Sharing']
 
@@ -167,7 +171,7 @@ class Sharing(SOAPService):
             if last_changes != "":
                 self._last_changes = last_changes
 
-        for role, members in response[0].iteritems():
+        for role, members in six.iteritems(response[0]):
             for member in members:
                 deleted = member.findtext("./ab:Deleted", "bool")
                 member_obj = Member.new(member)
@@ -177,7 +181,7 @@ class Sharing(SOAPService):
                 else:
                     member_obj.Roles[role] = deleted
                     memberships[member_id] = member_obj
-        run(callback, memberships.values())
+        run(callback, list(memberships.values()))
 
     def _HandleFindMembershipFault(self, callback, errback, response, user_data):
         error = AddressBookError.from_fault(response.fault)
@@ -254,7 +258,7 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
 
     if len(sys.argv) < 2:
-        account = raw_input('Account: ')
+        account = input('Account: ')
     else:
         account = sys.argv[1]
 
@@ -269,9 +273,9 @@ if __name__ == '__main__':
             lambda *args: gobject.idle_add(mainloop.quit()))
 
     def sharing_callback(memberships):
-        print "Memberships :"
+        print("Memberships :")
         for member in memberships:
-            print member
+            print(member)
 
     sso = SingleSignOn(account, password)
     sharing = Sharing(sso)

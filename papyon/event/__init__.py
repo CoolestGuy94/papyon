@@ -22,6 +22,7 @@
 Defines the interfaces that the client can implement to benefit from the
 client event notifications."""
 
+from __future__ import absolute_import
 from papyon.util.weak import WeakSet
 
 class EventsDispatcher(object):
@@ -59,22 +60,22 @@ class BaseEventInterface(object):
     def _dispatch_event(self, event_name, *params):
         try:
             handler = getattr(self, event_name)
-        except Exception, e:
+        except Exception as e:
             return False
 
         handler(*params)
         return True
 
-from client import *
-from conversation import *
-from profile import *
-from contact import *
-from address_book import *
-from content_roaming import *
-from offline_messages import *
-from invite import *
-from mailbox import *
-from call import *
-from media import *
-from session import *
-from webcam import *
+from .client import *
+from .conversation import *
+from .profile import *
+from .contact import *
+from .address_book import *
+from .content_roaming import *
+from .offline_messages import *
+from .invite import *
+from .mailbox import *
+from .call import *
+from .media import *
+from .session import *
+from .webcam import *

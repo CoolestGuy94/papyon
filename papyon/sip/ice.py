@@ -18,11 +18,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import absolute_import
 from papyon.media import MediaCandidate, MediaCandidateEncoder, MediaSessionType
 from papyon.media.constants import *
 from papyon.util.encoding import *
 
 import logging
+from six.moves import range
 
 logger = logging.getLogger('papyon.sip.ice')
 

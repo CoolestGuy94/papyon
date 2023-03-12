@@ -23,6 +23,7 @@
 The interfaces defined in this module allow receiving notification events
 from a L{Conversation<papyon.conversation.ConversationInterface>} object."""
 
+from __future__ import absolute_import
 from papyon.event import BaseEventInterface
 
 __all__ = ["ConversationEventInterface", "ConversationErrorType",

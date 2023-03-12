@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import absolute_import
 from papyon.errors import ParseError
 from papyon.sip.constants import *
 from papyon.util.decorator import rw_property
@@ -26,6 +27,7 @@ import gobject
 import logging
 import re
 import weakref
+import six
 
 __all__ = ['SIPMessage', 'SIPRequest', 'SIPResponse', 'SIPParseError',
            'SIPMessageParser']
@@ -79,9 +81,9 @@ class SIPMessage(object):
     def normalize_name(self, name):
         name = name.lower()
         if len(name) is 1:
-            for long, compact in COMPACT_HEADERS.iteritems():
+            for int, compact in six.iteritems(COMPACT_HEADERS):
                 if name == compact:
-                    return long
+                    return int
         return name
 
     def add_header(self, name, value):
@@ -266,7 +268,7 @@ class SIPMessageParser(gobject.GObject):
         try:
             while not finished:
                 finished = self.parse_buffer()
-        except Exception, err:
+        except Exception as err:
             logger.exception(err)
             logger.error("Error while parsing received message")
             self.reset()
@@ -409,14 +411,14 @@ class SIPRoute(object):
     @staticmethod
     def build(line):
         items = line.split(",")
-        route_set = map(lambda item: re.search("<([^>]*)>", item).group(1), items)
+        route_set = [re.search("<([^>]*)>", item).group(1) for item in items]
         return SIPRoute(route_set)
 
     def clone(self):
         return SIPRoute(self.route_set[:])
 
     def __str__(self):
-        return ",".join(map(lambda item: "<%s>" % item, self.route_set))
+        return ",".join(["<%s>" % item for item in self.route_set])
 
     def __eq__(self, other):
         return (self.route_set == other.route_set)

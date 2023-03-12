@@ -28,6 +28,7 @@ from the client.
     @group Error Enums: NetworkError, AuthenticationError, ProtocolError,
         AddressBookError, OfflineMessagesBoxError"""
 
+from __future__ import absolute_import
 from papyon.event import BaseEventInterface
 
 import papyon.errors

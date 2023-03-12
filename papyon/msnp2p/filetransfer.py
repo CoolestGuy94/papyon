@@ -18,12 +18,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import absolute_import
 from papyon.msnp2p.constants import ApplicationID, EufGuid
 from papyon.msnp2p.errors import FTParseError
 from papyon.msnp2p.session import P2PSession
 
 import gobject
 import struct
+import six
 
 __all__ = ['FileTransferSession']
 
@@ -85,7 +87,7 @@ class FileTransferSession(P2PSession):
             info = struct.unpack("<5I", context[0:20])
             self._size = info[2]
             self._has_preview = not bool(info[4])
-            self._filename = unicode(context[20:570], "utf-16-le").rstrip("\x00")
+            self._filename = six.text_type(context[20:570], "utf-16-le").rstrip("\x00")
 
             if self._has_preview:
                 self._preview = context[574:]

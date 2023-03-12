@@ -31,15 +31,17 @@ inside HTTP POST requests.
 The classes of this module are structured as follow:
 G{classtree BaseTransport}"""
 
-from gnet.proxy.factory import ProxyFactory
+from __future__ import absolute_import
+from .gnet.proxy.factory import ProxyFactory
 from papyon.util.async import run
 
-import gnet
-import gnet.protocol
-import msnp
+from . import gnet
+from . import gnet.protocol
+from . import msnp
 
 import logging
 import gobject
+import six
 
 __all__=['ServerType', 'DirectConnection']
 
@@ -286,7 +288,7 @@ class DirectConnection(BaseTransport):
             logger.warning("Transport is errored, not sending %s" % command.name)
             run(errback, self.__error)
             return
-        logger.debug('>>> ' + unicode(command))
+        logger.debug('>>> ' + six.text_type(command))
         self._transport.send(str(command),
                 (self.__on_command_sent, command, callback), errback)
         if increment:
@@ -327,7 +329,7 @@ class DirectConnection(BaseTransport):
             cmd = msnp.Command()
             try:
                 cmd.parse(chunk)
-            except Exception, err:
+            except Exception as err:
                 logger.error("Received invalid command, closing connection")
                 self.lose_connection(err)
                 return
@@ -340,7 +342,7 @@ class DirectConnection(BaseTransport):
             cmd.payload = chunk
             self.__pending_command = None
             self._receiver.delimiter = "\r\n"
-        logger.debug('<<< ' + unicode(cmd))
+        logger.debug('<<< ' + six.text_type(cmd))
         self.emit("command-received", cmd)
 gobject.type_register(DirectConnection)
 
@@ -435,7 +437,7 @@ class HTTPPollConnection(BaseTransport):
         self._waiting_for_response = True
         
         if command is not None:
-            logger.debug('>>> ' + unicode(command))
+            logger.debug('>>> ' + six.text_type(command))
         
         if increment:
             self._increment_transaction_id()
@@ -482,7 +484,7 @@ class HTTPPollConnection(BaseTransport):
     def __extract_command(self, data):
         try:
             first, rest = data.split('\r\n', 1)
-        except ValueError, err:
+        except ValueError as err:
             logger.warning('Unable to extract a command: %s' % data)
             self.lose_connection(err)
             return []
@@ -493,11 +495,11 @@ class HTTPPollConnection(BaseTransport):
             if cmd.payload_len > 0:
                 cmd.payload = rest[:cmd.payload_len].strip()
                 rest = rest[cmd.payload_len:]
-        except Exception, err:
+        except Exception as err:
             logger.error("Received invalid command, closing connection")
             self.lose_connection(err)
             return []
 
-        logger.debug('<<< ' + unicode(cmd))
+        logger.debug('<<< ' + six.text_type(cmd))
         self.emit("command-received", cmd)
         return rest

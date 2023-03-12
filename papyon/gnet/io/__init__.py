@@ -20,8 +20,9 @@
 """GNet IO layer, provide most commonly used IO transports to be used
 by higher level classes"""
 
-from abstract import *
-from sock import *
-from tcp import *
-from ssl_socket import *
-from ssl_tcp import *
+from __future__ import absolute_import
+from .abstract import *
+from .sock import *
+from .tcp import *
+from .ssl_socket import *
+from .ssl_tcp import *

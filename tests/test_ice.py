@@ -18,6 +18,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import absolute_import
+from __future__ import print_function
 import sys
 import unittest
 
@@ -142,7 +144,7 @@ class CandidateTestCase(unittest.TestCase):
     def testBuildLocal19(self):
         for args, line in audio_candidates19:
             candidate = createCandidate19(args)
-            print str(candidate)
+            print(str(candidate))
 
     def testBuildParse19(self):
         for args, line in audio_candidates19:

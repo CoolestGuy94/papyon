@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import absolute_import
 from papyon.errors import ClientError, ClientErrorType, ParseError
 from papyon.gnet.constants import *
 from papyon.gnet.io.ssl_tcp import SSLTCPClient
@@ -39,6 +40,8 @@ import socket
 import struct
 import sys
 import uuid
+from six.moves import range
+from six.moves import input
 
 logger = logging.getLogger('papyon.turn')
 
@@ -215,7 +218,7 @@ class TURNClient(gobject.GObject, Timer):
             else:
                 logger.warning("Received unexpected message: %i" % msg.type)
 
-        except Exception, e:
+        except Exception as e:
             logger.exception(e)
             logger.error("Received invalid TURN message")
 
@@ -256,7 +259,7 @@ class TURNClient(gobject.GObject, Timer):
 
     def on_relay_discovered(self, relay):
         logger.info("Discovered %s" % str(relay))
-        keys = self._requests.keys()
+        keys = list(self._requests.keys())
         if not keys:
             logger.warning("No active request necessitating new relay")
             return
@@ -403,7 +406,7 @@ def parse_server(value):
 if __name__ == "__main__":
 
     if len(sys.argv) < 2:
-        account = raw_input('Account: ')
+        account = input('Account: ')
     else:
         account = sys.argv[1]
 

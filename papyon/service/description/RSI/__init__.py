@@ -17,11 +17,12 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
+from __future__ import absolute_import
 name = "RSI"
 description = "Offline message service"
 
 url = "https://rsi.hotmail.com/rsi/rsi.asmx"
 
-import GetMetadata
-import GetMessage
-import DeleteMessages
+from . import GetMetadata
+from . import GetMessage
+from . import DeleteMessages

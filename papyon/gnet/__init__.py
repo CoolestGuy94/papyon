@@ -23,6 +23,7 @@
 The GNet library was designed as a replacement for the python asyncore
 and asynchat modules that easily integrate with the glib main loop.
 """
-from constants import IoStatus
-from errors import IoError
-import io
+from __future__ import absolute_import
+from .constants import IoStatus
+from .errors import IoError
+from . import io

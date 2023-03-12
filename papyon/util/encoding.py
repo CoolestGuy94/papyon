@@ -17,10 +17,12 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
+from __future__ import absolute_import
 import base64
 import email.quoprimime
 import email.base64mime
 import re
+import six
 
 
 PADDING = ('', '=', '==', 'A', 'A=', 'A==')
@@ -73,7 +75,7 @@ def decode_rfc2047_string(string):
                 unenc = parts.pop(0)
                 # don't append single spaces between encoded words to the result
                 if not decoded or not parts or unenc != ' ':
-                    decoded += unicode(unenc)
+                    decoded += six.text_type(unenc)
                 if parts:
                     charset, encoding = [s.lower() for s in parts[0:2]]
                     encoded = parts[2]
@@ -88,6 +90,6 @@ def decode_rfc2047_string(string):
     except:
         return string
 
-    if type(decoded) is unicode:
+    if type(decoded) is six.text_type:
         decoded = decoded.encode("utf-8")
     return decoded

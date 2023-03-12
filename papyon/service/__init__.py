@@ -24,4 +24,5 @@ Contains a set of clients to connect and interact with Windows Live services.
 
 # import AddressBook
 # import OfflineIM
-import ContentRoaming
+from __future__ import absolute_import
+from . import ContentRoaming

@@ -20,9 +20,11 @@
 
 """MSN protocol commands."""
 
-from urllib import quote, unquote
+from __future__ import absolute_import
+from six.moves.urllib.parse import quote, unquote
 
 from papyon.msnp.message import Message
+import six
 
 __all__ = ['Command']
 
@@ -223,7 +225,7 @@ class Command(object):
         return result + '\r\n'
 
     def __unicode__(self):
-        return unicode(CommandPrinter(self))
+        return six.text_type(CommandPrinter(self))
 
     def __parse_command(self, buf):
         words = buf.split()

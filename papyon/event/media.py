@@ -24,6 +24,7 @@ The interfaces defined in this module allow receiving notification events
 from a L{MediaSession<papyon.media.MediaSession>} object and a
 L{MediaStream<papyon.media.MediaStream> object."""
 
+from __future__ import absolute_import
 from papyon.event import BaseEventInterface
 
 import weakref

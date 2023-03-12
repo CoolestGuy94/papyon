@@ -17,12 +17,13 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
+from __future__ import absolute_import
 name = "scenario"
 description = ""
 
-import base
+from . import base
 
-from sync_headers import *
-from fetch_messages import *
-from send_message import *
-from delete_messages import *
+from .sync_headers import *
+from .fetch_messages import *
+from .send_message import *
+from .delete_messages import *

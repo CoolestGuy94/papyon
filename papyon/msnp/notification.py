@@ -23,10 +23,11 @@
 """Notification protocol Implementation
 Implements the protocol used to communicate with the Notification Server."""
 
-from base import BaseProtocol
-from message import Message
-from constants import ProtocolConstant, ProtocolError, ProtocolState
-from challenge import _msn_challenge
+from __future__ import absolute_import
+from .base import BaseProtocol
+from .message import Message
+from .constants import ProtocolConstant, ProtocolError, ProtocolState
+from .challenge import _msn_challenge
 
 import papyon
 from papyon.gnet.message.HTTP import HTTPMessage
@@ -46,9 +47,10 @@ import hashlib
 import time
 import logging
 import uuid
-import urllib
+import six.moves.urllib.request, six.moves.urllib.parse, six.moves.urllib.error
 import gobject
 import xml.sax.saxutils as xml_utils
+import six
 
 __all__ = ['NotificationProtocol']
 
@@ -115,10 +117,10 @@ class NotificationProtocol(BaseProtocol, Timer):
         if pspec.name == "state":
             return self.__state
         else:
-            raise AttributeError, "unknown property %s" % pspec.name
+            raise AttributeError("unknown property %s" % pspec.name)
 
     def do_set_property(self, pspec, value):
-        raise AttributeError, "unknown property %s" % pspec.name
+        raise AttributeError("unknown property %s" % pspec.name)
 
     # Public API -------------------------------------------------------------
     @throttled(2, LastElementQueue())
@@ -136,7 +138,7 @@ class NotificationProtocol(BaseProtocol, Timer):
             if msn_object:
                 self._client._msn_object_store.publish(msn_object)
             self._send_command('CHG',
-                    (presence, str(client_id), urllib.quote(str(msn_object))))
+                    (presence, str(client_id), six.moves.urllib.parse.quote(str(msn_object))))
 
     @throttled(2, LastElementQueue())
     def set_display_name(self, display_name):
@@ -145,7 +147,7 @@ class NotificationProtocol(BaseProtocol, Timer):
             @param display_name: the new friendly name
             @type display_name: string"""
         self._send_command('PRP',
-                ('MFN', urllib.quote(display_name)))
+                ('MFN', six.moves.urllib.parse.quote(display_name)))
 
     @throttled(2, LastElementQueue())
     def set_personal_message(self, personal_message='', current_media=None,
@@ -389,7 +391,7 @@ class NotificationProtocol(BaseProtocol, Timer):
                         self._address_book_contact_disallowed_cb)
 
             elif command.arguments[0] == "TWN":
-                raise NotImplementedError, "Missing Implementation, please fix"
+                raise NotImplementedError("Missing Implementation, please fix")
 
     def _handle_SBS(self, command): # unknown command
         pass
@@ -426,7 +428,7 @@ class NotificationProtocol(BaseProtocol, Timer):
         if len(command.arguments) > 2:
             if command.arguments[2] != '0':
                 msn_object = papyon.p2p.MSNObject.parse(self._client,
-                               urllib.unquote(command.arguments[2]))
+                               six.moves.urllib.parse.unquote(command.arguments[2]))
             else:
                 msn_object = None
             self._client.profile._server_property_changed("msn_object", msn_object)
@@ -447,7 +449,7 @@ class NotificationProtocol(BaseProtocol, Timer):
     def _handle_NLN(self, command):
         idx, network_id, account = self.__parse_network_and_account(command, 1)
         presence = command.arguments[0]
-        display_name = urllib.unquote(command.arguments[idx])
+        display_name = six.moves.urllib.parse.unquote(command.arguments[idx])
         idx += 1
         capabilities = command.arguments[idx]
         idx += 1
@@ -458,7 +460,7 @@ class NotificationProtocol(BaseProtocol, Timer):
         if len(command.arguments) > idx:
             if command.arguments[idx] not in ('0', '1'):
                 msn_object = papyon.p2p.MSNObject.parse(self._client,
-                               urllib.unquote(command.arguments[idx]))
+                               six.moves.urllib.parse.unquote(command.arguments[idx]))
 
         idx += 1
         if len(command.arguments) > idx:
@@ -484,7 +486,7 @@ class NotificationProtocol(BaseProtocol, Timer):
         if len(command.arguments) < 2: return
         if ctype == 'MFN':
             self._client.profile._server_property_changed('display-name',
-                    urllib.unquote(command.arguments[1]))
+                    six.moves.urllib.parse.unquote(command.arguments[1]))
         # TODO: add support for other stuff
 
     def _handle_UUX(self, command):
@@ -694,7 +696,7 @@ class NotificationProtocol(BaseProtocol, Timer):
         port = int(port)
         key = command.arguments[3]
         account = command.arguments[4]
-        display_name = urllib.unquote(command.arguments[5])
+        display_name = six.moves.urllib.parse.unquote(command.arguments[5])
 
         session = ((host, port), session_id, key)
         inviter = (account, display_name)
@@ -739,7 +741,7 @@ class NotificationProtocol(BaseProtocol, Timer):
 
     #---------- Errors -------------------------------------------------------
     def _error_handler(self, error):
-        logger.error('Notification got error : ' + unicode(error))
+        logger.error('Notification got error : ' + six.text_type(error))
         self._command_error_cb(error.transaction_id, int(error.name))
 
 
@@ -808,7 +810,7 @@ class NotificationProtocol(BaseProtocol, Timer):
                 contact._remove_membership(profile.Membership.ALLOW)
 
         payloads = ['<ml l="1">']
-        for domain, contacts in contacts.iteritems():
+        for domain, contacts in six.iteritems(contacts):
             payloads[-1] += '<d n="%s">' % domain
             for contact in contacts:
                 user = contact.account.split("@", 1)[0]

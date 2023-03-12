@@ -19,9 +19,11 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-import ab
-import sharing
-import scenario
+from __future__ import absolute_import
+from __future__ import print_function
+from . import ab
+from . import sharing
+from . import scenario
 
 import papyon
 import papyon.profile as profile
@@ -36,6 +38,8 @@ from papyon.util.async import run
 import gobject
 
 import logging
+import six
+from six.moves import input
 logger = logging.getLogger('papyon.service.address_book')
 
 
@@ -70,7 +74,7 @@ class AddressBookStorage(set):
             group_by_func.__name__ = name
             return group_by_func
         else:
-            raise AttributeError, name
+            raise AttributeError(name)
 
     def search_by_memberships(self, memberships):
         result = []
@@ -108,11 +112,11 @@ class AddressBookStorage(set):
 
     def search_by(self, field, value):
         result = []
-        if isinstance(value, basestring):
+        if isinstance(value, six.string_types):
             value = value.lower()
         for contact in self:
             contact_field_value = getattr(contact, field)
-            if isinstance(contact_field_value, basestring):
+            if isinstance(contact_field_value, six.string_types):
                 contact_field_value = contact_field_value.lower()
             if contact_field_value == value:
                 result.append(contact)
@@ -850,7 +854,7 @@ gobject.type_register(AddressBook)
 
 if __name__ == '__main__':
     def get_proxies():
-        import urllib
+        import six.moves.urllib.request, six.moves.urllib.parse, six.moves.urllib.error
         proxies = urllib.getproxies()
         result = {}
         if 'https' not in proxies and \
@@ -875,7 +879,7 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
 
     if len(sys.argv) < 2:
-        account = raw_input('Account: ')
+        account = input('Account: ')
     else:
         account = sys.argv[1]
 
@@ -892,15 +896,15 @@ if __name__ == '__main__':
     def address_book_state_changed(address_book, pspec):
         if address_book.state == AddressBookState.SYNCHRONIZED:
             for group in address_book.groups:
-                print "Group : %s " % group.name
+                print("Group : %s " % group.name)
 
             for contact in address_book.contacts:
-                print "Contact : %s (%s) %s" % \
+                print("Contact : %s (%s) %s" % \
                     (contact.account,
                      contact.display_name,
-                     contact.network_id)
+                     contact.network_id))
 
-            print address_book.contacts[0].account
+            print(address_book.contacts[0].account)
             address_book.update_contact_infos(address_book.contacts[0], {ContactGeneral.FIRST_NAME : "lolibouep"})
 
             #address_book.sync(True)
@@ -935,10 +939,10 @@ if __name__ == '__main__':
             #address_book.add_messenger_contact("johanssn.prieur@gmail.com")
 
     def messenger_contact_added(address_book, contact):
-        print "Added contact : %s (%s) %s %s" % (contact.account,
+        print("Added contact : %s (%s) %s %s" % (contact.account,
                                                  contact.display_name,
                                                  contact.network_id,
-                                                 contact.memberships)
+                                                 contact.memberships))
 
     sso = SingleSignOn(account, password, proxies=get_proxies())
     address_book = AddressBook(sso, proxies=get_proxies())

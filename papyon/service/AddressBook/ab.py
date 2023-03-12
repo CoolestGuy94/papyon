@@ -18,6 +18,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import absolute_import
+from __future__ import print_function
 from papyon.service.SOAPService import SOAPService
 from papyon.util.async import *
 from papyon.util.element_tree import XMLTYPE
@@ -28,6 +30,7 @@ from papyon.service.AddressBook.constants import *
 from papyon.service.description.AB.constants import ContactGeneral
 
 import logging
+from six.moves import input
 logger = logging.getLogger('papyon.service.address_book')
 
 __all__ = ['AB']
@@ -450,7 +453,7 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
 
     if len(sys.argv) < 2:
-        account = raw_input('Account: ')
+        account = input('Account: ')
     else:
         account = sys.argv[1]
 
@@ -465,8 +468,8 @@ if __name__ == '__main__':
             lambda *args: gobject.idle_add(mainloop.quit()))
 
     def ab_callback(contacts, groups):
-        print contacts
-        print groups
+        print(contacts)
+        print(groups)
 
     sso = SingleSignOn(account, password)
     ab = AB(sso)

@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import absolute_import
 from papyon.util.decorator import rw_property
 
 __all__ = ['MediaSessionMessage', 'MediaStreamDescription']
@@ -103,13 +104,13 @@ class MediaStreamDescription(object):
 
     @property
     def valid_codecs(self):
-        return filter(lambda c: self.is_valid_codec(c), self.codecs)
+        return [c for c in self.codecs if self.is_valid_codec(c)]
 
     def is_valid_codec(self, codec):
         return True
 
     def set_codecs(self, codecs):
-        codecs = filter(lambda c: self.is_valid_codec(c), codecs)
+        codecs = [c for c in codecs if self.is_valid_codec(c)]
         self.codecs = codecs
 
     def get_codec(self, payload):

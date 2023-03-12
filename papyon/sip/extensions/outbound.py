@@ -20,6 +20,7 @@
 
 # http://tools.ietf.org/id/draft-ietf-sip-outbound-11.txt
 
+from __future__ import absolute_import
 from papyon.sip.extensions.base import SIPExtension
 
 class OutboundExtension(SIPExtension):

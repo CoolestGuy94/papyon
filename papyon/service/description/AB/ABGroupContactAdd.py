@@ -17,8 +17,9 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-from common import *
-from constants import *
+from __future__ import absolute_import
+from .common import *
+from .constants import *
 
 def transport_headers():
     """Returns a dictionary, containing transport (http) headers

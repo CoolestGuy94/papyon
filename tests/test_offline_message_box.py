@@ -18,7 +18,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-from base import *
+from __future__ import absolute_import
+from __future__ import print_function
+from .base import *
 
 sys.path.insert(0, "")
 
@@ -62,8 +64,8 @@ class OIMClientEvents(TestClientEvents,
         for message in messages:
             if message.sender is None:
                 continue
-            print 'Received offline message from %s (%s)' % \
-                (message.display_name, message.sender.account)
+            print('Received offline message from %s (%s)' % \
+                (message.display_name, message.sender.account))
 
         if self._client.options.fetch:
             self._client.oim_box.fetch_messages(messages)
@@ -72,9 +74,9 @@ class OIMClientEvents(TestClientEvents,
         for message in messages:
             if message.sender is None:
                 continue
-            print 'Fetched offline message from %s (%s)' % \
-                (message.display_name, message.sender.account)
-            print message.text
+            print('Fetched offline message from %s (%s)' % \
+                (message.display_name, message.sender.account))
+            print(message.text)
 
         if self._client.options.delete:
             self._client.oim_box.delete_messages(messages)
@@ -83,8 +85,8 @@ class OIMClientEvents(TestClientEvents,
         for message in messages:
             if message.sender is None:
                 continue
-            print 'Deleted offline message from %s (%s)' % \
-                (message.display_name, message.sender.account)
+            print('Deleted offline message from %s (%s)' % \
+                (message.display_name, message.sender.account))
 
 
 if __name__ == "__main__":

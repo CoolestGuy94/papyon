@@ -26,6 +26,7 @@ contacts in his/her contact list.
     @group Enums: Presence, Membership, Privacy, NetworkID
     @sort: Presence, Membership, Privacy, NetworkID"""
 
+from __future__ import absolute_import
 from papyon.util.decorator import rw_property
 
 import gobject

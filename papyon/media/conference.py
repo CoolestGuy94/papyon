@@ -18,10 +18,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import absolute_import
 from papyon.media import *
 from papyon.event.media import *
 
 import pygst
+import six
 pygst.require('0.10')
 
 import farsight
@@ -205,7 +207,7 @@ class MediaStreamHandler(MediaStreamEventInterface):
         del self.fsstream
 
     def on_remote_candidates_received(self, candidates):
-        candidates = filter(lambda x: x.transport == "UDP", candidates)
+        candidates = [x for x in candidates if x.transport == "UDP"]
         candidates = convert_media_candidates(candidates)
         self.fsstream.set_remote_candidates(candidates)
 
@@ -250,7 +252,7 @@ def convert_media_candidates(candidates):
         if candidate.transport == "UDP":
             proto = farsight.NETWORK_PROTOCOL_UDP
         type = 0
-        for k,v in types.iteritems():
+        for k,v in six.iteritems(types):
             if v == candidate.type:
                 type = k
         fscandidate = farsight.Candidate()
@@ -293,7 +295,7 @@ def convert_media_codecs(codecs, name):
             codec.encoding,
             media_type,
             codec.clockrate)
-        fscodec.optional_params = codec.params.items()
+        fscodec.optional_params = list(codec.params.items())
         fscodecs.append(fscodec)
     return fscodecs
 

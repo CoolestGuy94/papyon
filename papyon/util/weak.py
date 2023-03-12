@@ -19,6 +19,7 @@
 
 """Some missing weak refs"""
 
+from __future__ import absolute_import
 from weakref import WeakValueDictionary
 
 __all__ = ['WeakSet']
@@ -54,4 +55,4 @@ class WeakSet(object):
         return id(obj) in self._data
 
     def __hash__(self):
-        raise TypeError, "Can't hash a WeakSet."
+        raise TypeError("Can't hash a WeakSet.")

@@ -16,6 +16,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
+from __future__ import absolute_import
 from papyon.service.AddressBook.constants import ABUpdateMembershipWrapper
 from papyon.service.AddressBook.scenario.base import BaseScenario
 
@@ -80,14 +81,14 @@ class UpdateMembershipsScenario(BaseScenario):
                 self._delete(Membership.PENDING):
             self.__late_pending_delete = True
 
-        self.__process_delete(UpdateMembershipsScenario.__mapping.keys(),
+        self.__process_delete(list(UpdateMembershipsScenario.__mapping.keys()),
                               Membership.NONE)
 
     def __process_delete(self, memberships, last):
         self.__done &= ~last
 
         if memberships == []:
-            self.__process_add(UpdateMembershipsScenario.__mapping.keys(),
+            self.__process_add(list(UpdateMembershipsScenario.__mapping.keys()),
                                Membership.NONE)
             return
 
